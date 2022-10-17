@@ -1,11 +1,11 @@
 package model;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ui.WizardsVsZombies;
 
 import static model.Zombie.ZOMBIE_SPEED;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ZombieTest {
 
@@ -13,7 +13,7 @@ public class ZombieTest {
     private static final int x = WizardsVsZombies.WIDTH / 2;
     private static final int y = WizardsVsZombies.HEIGHT / 2;
 
-    @Before
+    @BeforeEach
     public void before() {
         zombie = new Zombie(x, y);
     }

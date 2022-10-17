@@ -1,12 +1,12 @@
 package model;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ui.WizardsVsZombies;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameLogicTest {
 
@@ -21,7 +21,7 @@ public class GameLogicTest {
     private Zombie z;
     private Blast b;
 
-    @Before
+    @BeforeEach
     public void before() {
         game = new GameLogic();
         z = new Zombie(X, Y);

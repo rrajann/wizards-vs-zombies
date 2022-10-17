@@ -12,8 +12,8 @@ import java.util.Scanner;
 public class WizardsVsZombies {
 
     // Game board:
-    public static final int HEIGHT = 1000;
-    public static final int WIDTH = 1000;
+    public static final int HEIGHT = 100;
+    public static final int WIDTH = 100;
     public static final int INTERVAL = 10;
 
     private List<Blast> blasts;

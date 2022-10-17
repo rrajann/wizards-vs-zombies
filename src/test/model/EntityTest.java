@@ -1,11 +1,13 @@
 package model;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ui.WizardsVsZombies;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class EntityTest {
 
@@ -16,7 +18,7 @@ public class EntityTest {
     private static final int x = WizardsVsZombies.WIDTH/2;
     private static final int y = WizardsVsZombies.HEIGHT/2;
 
-    @Before
+    @BeforeEach
     public void before() {
         wizard = new Wizard(x, y);
         zombie = new Zombie(x, y);

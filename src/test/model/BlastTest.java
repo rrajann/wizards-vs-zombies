@@ -1,9 +1,11 @@
 package model;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import ui.WizardsVsZombies;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class BlastTest {
 

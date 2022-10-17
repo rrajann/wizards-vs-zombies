@@ -1,20 +1,18 @@
 package model;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ui.WizardsVsZombies;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WizardTest {
 
     private Wizard wizard;
-    private Wizard upWizard;
     private int speed = Wizard.SPEED;
     private int width = WizardsVsZombies.WIDTH;
-    private int height = WizardsVsZombies.HEIGHT;
 
-    @Before
+    @BeforeEach
     public void before() {
         wizard = new Wizard(50, 20);
     }

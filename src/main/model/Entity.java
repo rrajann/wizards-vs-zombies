@@ -1,7 +1,5 @@
 package model;
 
-import java.awt.*;
-
 public class Entity {
 
     protected int posX;

@@ -10,12 +10,6 @@ public class GameLogic {
     private List<Blast> blasts;
     private List<Zombie> zombies;
     private Wizard wizard;
-    private int posX;
-    private int posY;
-    private boolean horizontal;
-    private boolean direction;
-    private Zombie zombie;
-    private Blast blast;
 
     // EFFECT: creates a collection of entities, including one wizard and a list of wizards and blasts
     public GameLogic() {
@@ -134,14 +128,5 @@ public class GameLogic {
         }
         return gotHit;
     }
-
-    /* GAME FUNCTIONALITY:
-
-      - Wizard can move in all four directions
-      - If wizard does a basic attack, add a blast to a list of blasts
-      - If wizard gets hit by zombie, decrease the wizards health by ZOMBIE_DAMAGE
-      - If zombie gets hit by blast, remove the zombie from the list of zombies
-      - After every x seconds that the wizard survives, increase the zombies speed
-     */
 
 }
