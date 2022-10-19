@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Zombie extends Entity {
 
     public static final int ZOMBIE_SPEED = 5;
@@ -38,5 +40,4 @@ public class Zombie extends Entity {
             this.posY = y;
         }
     }
-
 }
