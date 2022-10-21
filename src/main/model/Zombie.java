@@ -17,27 +17,46 @@ public class Zombie extends Entity {
     // MODIFIES: this
     // REQUIRES: x and y must both be within the game boundaries (ie: within 0 and game WIDTH/HEIGHT)
     public void approach(int x, int y) {
-        if (posX > x) {
-            this.posX -= ZOMBIE_SPEED;
-            if (posY > y) {                         // if zombie is on bottom right
-                this.posY -= ZOMBIE_SPEED;
-            } else if (posY < y) {                  // if zombie is on top right
-                this.posY += ZOMBIE_SPEED;
+        approachX(x);
+        approachY(y);
+    }
+
+    // EFFECTS: moves the zombie closer to the specified x argument
+    // MODIFIES: this
+    // REQUIRES: x must both be within the game boundaries (ie: within 0 and game WIDTH/HEIGHT)
+    public void approachX(int x) {
+        if (posX >= x) {
+            if (posX - x < ZOMBIE_SPEED) {
+                posX = x;
+            } else {
+                posX -= ZOMBIE_SPEED;
             }
-        } else if (posX < x) {
-            this.posX += ZOMBIE_SPEED;
-            if (posY > y) {                         // if zombie is on bottom left
-                this.posY -= ZOMBIE_SPEED;
-            } else if (posY < y) {                  // if zombie is on top left
-                this.posY += ZOMBIE_SPEED;
+        } else {
+            if (x - posX < ZOMBIE_SPEED) {
+                posX = x;
+            } else {
+                posX += ZOMBIE_SPEED;
             }
-        } else if (posY > y) {                      // if zombie is on same x coord but bottom
-            this.posY -= ZOMBIE_SPEED;
-        } else if (posY < y) {
-            this.posY += ZOMBIE_SPEED;              // if zombie is on same x coord but top
-        } else {                                    // zombie is in same coord
-            this.posX = x;
-            this.posY = y;
+        }
+    }
+
+    // EFFECTS: moves the zombie closer to the specified y argument
+    // MODIFIES: this
+    // REQUIRES: y must both be within the game boundaries (ie: within 0 and game WIDTH/HEIGHT)
+    public void approachY(int y) {
+        if (posY >= y) {
+            if (posY - y < ZOMBIE_SPEED) {
+                posY = y;
+            } else {
+                posY -= ZOMBIE_SPEED;
+            }
+        } else {
+            if (y - posY < ZOMBIE_SPEED) {
+                posY = y;
+            } else {
+                posY += ZOMBIE_SPEED;
+            }
         }
     }
 }
+

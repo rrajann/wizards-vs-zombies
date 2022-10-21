@@ -35,4 +35,12 @@ public class EntityTest {
         assertFalse(zombie.hitBy(blast));
     }
 
+    @Test
+    public void hitByTestSecond() {
+        wizard.moveUp();
+        assertFalse(wizard.hitBy(zombie));
+        wizard.moveLeft();
+        assertFalse(wizard.hitBy(zombie));
+    }
+
 }

@@ -81,6 +81,32 @@ public class ZombieTest {
         assertEquals(y + ZOMBIE_SPEED, zombie.getPosY());
     }
 
+    @Test
+    public void approachWithinSpeedTopRight() {
+        zombie.approach(x + (ZOMBIE_SPEED / 2), y - (ZOMBIE_SPEED / 2));
+        assertEquals(x + (ZOMBIE_SPEED / 2), zombie.getPosX());
+        assertEquals(y - (ZOMBIE_SPEED / 2), zombie.getPosY());
+    }
 
+    @Test
+    public void approachWithinSpeedTopLeft() {
+        zombie.approach(x - (ZOMBIE_SPEED / 2), y - (ZOMBIE_SPEED / 2));
+        assertEquals(x - (ZOMBIE_SPEED / 2), zombie.getPosX());
+        assertEquals(y - (ZOMBIE_SPEED / 2), zombie.getPosY());
+    }
+
+    @Test
+    public void approachWithinSpeedBotRight() {
+        zombie.approach(x + (ZOMBIE_SPEED / 2), y + (ZOMBIE_SPEED / 2));
+        assertEquals(x + (ZOMBIE_SPEED / 2), zombie.getPosX());
+        assertEquals(y + (ZOMBIE_SPEED / 2), zombie.getPosY());
+    }
+
+    @Test
+    public void approachWithinSpeedBotLeft() {
+        zombie.approach(x - (ZOMBIE_SPEED / 2), y + (ZOMBIE_SPEED / 2));
+        assertEquals(x - (ZOMBIE_SPEED / 2), zombie.getPosX());
+        assertEquals(y + (ZOMBIE_SPEED / 2), zombie.getPosY());
+    }
 
 }
