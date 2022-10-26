@@ -1,6 +1,10 @@
 package model;
 
-public class Blast extends Entity {
+import org.json.JSONObject;
+import persistence.Writable;
+
+// Represents a single blast that can be thrown by the wizard
+public class Blast extends Entity implements Writable {
 
     public static final int BLAST_SPEED = 10;
     public static final int BLAST_X_SIZE = 3;
@@ -44,5 +48,14 @@ public class Blast extends Entity {
         }
     }
 
-
+    // EFFECTS: converts blast fields into JSON syntax
+    @Override
+    public JSONObject toJson() {
+        JSONObject blastAttribute = new JSONObject();
+        blastAttribute.put("x", posX);
+        blastAttribute.put("y", posY);
+        blastAttribute.put("horizontal", horizontal);
+        blastAttribute.put("direction", direction);
+        return blastAttribute;
+    }
 }

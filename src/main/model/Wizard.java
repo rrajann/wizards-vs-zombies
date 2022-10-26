@@ -1,8 +1,14 @@
 package model;
 
+import netscape.javascript.JSException;
+import netscape.javascript.JSObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 import ui.WizardsVsZombies;
 
-public class Wizard extends Entity {
+// Represents a wizard that the player controls through key inputs
+public class Wizard extends Entity implements Writable {
 
     public static final int HEALTH = 100;
     public static final int TIME_UNTIL = 5;
@@ -55,6 +61,29 @@ public class Wizard extends Entity {
         return this.moving;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the x position
+    public void setPosX(int x) {
+        posX = x;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets the x position
+    public void setPosY(int y) {
+        posY = y;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: changes dx to given argument
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: changes dy to given argument
+    public void setDy(int dy) {
+        this.dy = dy;
+    }
 
     // MODIFICATION METHODS:
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,4 +161,17 @@ public class Wizard extends Entity {
         }
     }
 
+    // EFFECTS: converts wizard fields into JSON syntax
+    @Override
+    public JSONObject toJson() {
+        JSONObject wizardAttributes = new JSONObject();
+        wizardAttributes.put("x", posX);
+        wizardAttributes.put("y", posY);
+        wizardAttributes.put("dx", dx);
+        wizardAttributes.put("dy", dy);
+        wizardAttributes.put("health", health);
+        wizardAttributes.put("time", time);
+        wizardAttributes.put("moving", moving);
+        return wizardAttributes;
+    }
 }

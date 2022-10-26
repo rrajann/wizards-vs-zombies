@@ -1,8 +1,13 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.JsonWriter;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
-public class Zombie extends Entity {
+// Represents a single zombie that approaches the wizard
+public class Zombie extends Entity implements Writable {
 
     public static final int ZOMBIE_SPEED = 5;
     public static final int ZOMBIE_X_SIZE = 6;
@@ -57,6 +62,16 @@ public class Zombie extends Entity {
                 posY += ZOMBIE_SPEED;
             }
         }
+    }
+
+    // EFFECTS: converts zombie fields into JSON syntax
+    @Override
+    public JSONObject toJson() {
+        JSONObject zombieAttributes = new JSONObject();
+        zombieAttributes.put("x", posX);
+        zombieAttributes.put("y", posY);
+
+        return zombieAttributes;
     }
 }
 

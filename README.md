@@ -27,3 +27,5 @@ many interactive components.
 - As a user, I want to be able to move in all four directions
 - As a user, I want zombies to spawn from random positions
 - As a user, I want to be able to see my health bar
+- As a user, whenever I quit the game I want to be given the option to save the game state or not
+- As a user, whenever I start the game, I want to be given the option of starting from a previously saved state

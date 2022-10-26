@@ -1,5 +1,6 @@
 package model;
 
+// interface for any dynamic (moving) class in the game
 public class Entity {
 
     protected int posX;

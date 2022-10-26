@@ -1,11 +1,16 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.JsonWriter;
+import persistence.Writable;
 import ui.WizardsVsZombies;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameLogic {
+// Represents the interaction of all entities and list of entities within the game
+public class GameLogic implements Writable {
 
     private List<Blast> blasts;
     private List<Zombie> zombies;
@@ -31,6 +36,16 @@ public class GameLogic {
     // EFFECT: returns the wizard in the game
     public Wizard getWizard() {
         return wizard;
+    }
+
+    // EFFECT: sets lists of blasts to this parameter
+    public void setBlasts(List<Blast> blasts) {
+        this.blasts = blasts;
+    }
+
+    // EFFECT: sets lists of zombies to this parameter
+    public void setZombies(List<Zombie> zombies) {
+        this.zombies = zombies;
     }
 
     // EFFECT: advances the state of blasts by one frame
@@ -129,4 +144,25 @@ public class GameLogic {
         return gotHit;
     }
 
+    // EFFECTS: converts game state into JSON syntax
+    @Override
+    public JSONObject toJson() {
+        JSONObject gameState = new JSONObject();
+        JSONArray blastsStatus = new JSONArray();
+        JSONArray zombiesStatus = new JSONArray();
+
+        for (Blast b : blasts) {
+            blastsStatus.put(b.toJson());
+        }
+
+        for (Zombie z : zombies) {
+            zombiesStatus.put(z.toJson());
+        }
+
+        gameState.put("Wizard", wizard.toJson());
+        gameState.put("Blasts", blastsStatus);
+        gameState.put("Zombies", zombiesStatus);
+
+        return gameState;
+    }
 }
