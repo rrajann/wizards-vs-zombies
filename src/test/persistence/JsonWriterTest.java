@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class JsonWriterTest {
@@ -19,11 +21,7 @@ public class JsonWriterTest {
     @BeforeEach
     public void before() {                          // used for random games
         randomGame = new GameLogic();
-        Wizard wizard = randomGame.getWizard();
-        wizard.setPosX(50);
-        wizard.setPosY(20);
-        wizard.setDx(0);
-        wizard.setDy(5);
+        randomGame.setWizard(50, 20, 0, 5, 56, 5, false);
 
         Blast blast1 = new Blast(20, 5, true, false);
         Blast blast2 = new Blast(50, 20, false, false);
@@ -61,13 +59,16 @@ public class JsonWriterTest {
             JsonReader reader = new JsonReader("./data/testWriterStartGame.json");
             GameLogic readGame = reader.read();
 
-            readGame.equals(game);
+            assertEquals(50, readGame.getWizard().getPosX());
+            assertEquals(50, readGame.getWizard().getPosY());
+            assertEquals(0, readGame.getBlasts().size());
+            assertEquals(0, readGame.getZombies().size());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            fail("Should not have caught exception");
         }
     }
 
-        @Test
+    @Test
     public void testWriterRandomGame() {
         try {
             JsonWriter writer = new JsonWriter("./data/testWriterRandomGame.json");
@@ -77,10 +78,39 @@ public class JsonWriterTest {
             JsonReader reader = new JsonReader("./data/testWriterRandomGame.json");
             GameLogic readGame = reader.read();
 
-            readGame.equals(randomGame);                      // checks if what is written is the same as instantiation
+            assertEquals(50, readGame.getWizard().getPosX());
+            assertEquals(20, readGame.getWizard().getPosY());
+            assertEquals(56, readGame.getWizard().getHealth());
+            assertEquals(2, readGame.getBlasts().size());
+            assertEquals(3, readGame.getZombies().size());
         } catch (IOException e) {
             fail ("Should not have caught exception");
         }
     }
 
+    @Test
+    public void testOverwritePreviousGame() {
+        try {
+            GameLogic game = new GameLogic();
+            game.setWizard(0, 5, 0, 5, 100, 5, false);
+            JsonWriter writer = new JsonWriter("./data/testOverridePreviousGame");
+            writer.open();
+            writer.writeOn(game);
+
+            JsonReader reader = new JsonReader("./data/testOverridePreviousGame");
+            game = reader.read();
+
+            game.getWizard().moveRight();
+            game.getWizard().moveDown();
+
+            writer.open();
+            writer.writeOn(game);
+
+            game = reader.read();
+            assertEquals(Wizard.SPEED, game.getWizard().getPosX());
+            assertEquals(5 + Wizard.SPEED, game.getWizard().getPosY());
+        } catch (IOException e) {
+            fail("Should not have caught exception");
+        }
+    }
 }

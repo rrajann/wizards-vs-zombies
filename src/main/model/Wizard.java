@@ -10,8 +10,6 @@ import ui.WizardsVsZombies;
 // Represents a wizard that the player controls through key inputs
 public class Wizard extends Entity implements Writable {
 
-    public static final int HEALTH = 100;
-    public static final int TIME_UNTIL = 5;
     public static final int SPEED = 5;
 
     private int health;
@@ -28,8 +26,8 @@ public class Wizard extends Entity implements Writable {
         speed = SPEED;
         dy = 0;
         dx = speed;
-        health = HEALTH;
-        time = TIME_UNTIL;
+        health = 100;
+        time = 5;
         moving = false;
     }
 

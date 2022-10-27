@@ -4,7 +4,12 @@ import model.GameLogic;
 import model.Zombie;
 import model.Blast;
 import model.Wizard;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -15,6 +20,7 @@ public class WizardsVsZombies extends Thread {
     public static final int HEIGHT = 100;
     public static final int WIDTH = 100;
     public static final int INTERVAL = 1000;
+    public static final String FILE = "./data/savedStated.json";
 
     private List<Blast> blasts;
     private List<Zombie> zombies;
@@ -24,15 +30,45 @@ public class WizardsVsZombies extends Thread {
     private boolean play;
     private boolean paused;
     private Scanner input;
+    private JsonWriter saver;
+    private JsonReader loader;
+    private boolean load;
 
     // EFFECTS: creates a new game of Wizards vs Zombies
     public WizardsVsZombies() {
         game = new GameLogic();
-        wizard = game.getWizard();
-        zombies = game.getZombies();
-        blasts = game.getBlasts();
-        paused = false;
+        play = true;
         input = new Scanner(System.in);
+        saver = new JsonWriter(FILE);
+        loader = new JsonReader(FILE);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets save to true or false;
+    public void setLoad(boolean bool) {
+        load = bool;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads the previously saved game state
+    public void loadGame() {
+        try {
+            game = loader.read();
+            System.out.println("Loaded previous game");
+        } catch (IOException e) {
+            System.out.println("Unable to read file" + " " + FILE);
+        }
+    }
+
+    // EFFECTS: saves current game state into JSON file
+    public void saveGame() {
+        try {
+            saver.open();
+            saver.writeOn(game);
+            System.out.println("Saved to " + FILE);
+        } catch (FileNotFoundException e) {
+            System.out.println("File " + FILE + " does not exist");
+        }
     }
 
     // EFFECTS: places a zombie in a random coordinate
@@ -52,26 +88,21 @@ public class WizardsVsZombies extends Thread {
     // MODIFIES: this
     public void playerInput() {
         String key = null;
-        play = true;
-        displayMenu();
 
-        while (wizard.getHealth() > 0 && play) {
+        while (game.getWizard().getHealth() > 0 && play) {
             key = input.next();
 
             controls(key);
-
-            if (key.equals("b")) {
-                play = false;
-            }
+            showGameStatus();
         }
     }
 
-    // EFFECTS: creates a game loop that runs until the user pauses or the wizards health reaches 0
+    // EFFECTS: creates a game loop that runs until the wizards health reaches 0
     // MODIFIES: this
     @Override
     public void run() {
 
-        while (!paused && wizard.getHealth() > 0) {
+        while (play && game.getWizard().getHealth() > 0) {
             Random random = new Random();
             int lottery = random.nextInt(6);
 
@@ -79,8 +110,9 @@ public class WizardsVsZombies extends Thread {
                 game.addZombie(generateRandomZombie());
             }
 
-            update();
             showGameStatus();
+            update();
+
             try {
                 WizardsVsZombies.sleep(INTERVAL);
             } catch (InterruptedException e) {
@@ -94,20 +126,23 @@ public class WizardsVsZombies extends Thread {
     public void controls(String key) {
 
         if (key.equals("w")) {
-            wizard.moveUp();
+            game.getWizard().moveUp();
             System.out.println("Wizard moved up.");
         } else if (key.equals("a")) {
-            wizard.moveLeft();
+            game.getWizard().moveLeft();
             System.out.println("Wizard moved left.");
         } else if (key.equals("s")) {
-            wizard.moveDown();
+            game.getWizard().moveDown();
             System.out.println("Wizard moved down.");
         } else if (key.equals("d")) {
-            wizard.moveRight();
+            game.getWizard().moveRight();
             System.out.println("Wizard moved right.");
         } else if (key.equals("k")) {
             game.basicAttack();
             System.out.println("Wizard threw a blast!");
+        } else if (key.equals("b")) {
+            saveGame();
+            play = false;
         } else {
             System.out.println("Not a valid input.");
         }
@@ -121,6 +156,7 @@ public class WizardsVsZombies extends Thread {
         System.out.println("Press S to move down");
         System.out.println("Press D to move right");
         System.out.println("Press K to shoot a blast");
+        System.out.println("Press C to load previous game");
         System.out.println("Press B to quit game");
     }
 
@@ -139,22 +175,23 @@ public class WizardsVsZombies extends Thread {
 
     // EFFECTS: prints the current state of the game
     public void showGameStatus() {
-        System.out.println("Health: " + wizard.getHealth());
+        Wizard wizard = game.getWizard();
+
+        System.out.println("Health: " + game.getWizard().getHealth());
         System.out.println("Position: (" + wizard.getPosX() + ", " + wizard.getPosY() + ")");
 
-        System.out.println("Num of blasts: " + blasts.size());
+        System.out.println("Num of blasts: " + game.getBlasts().size());
 
         int i = 1;
 
-        for (Zombie zombie : zombies) {
+        for (Zombie zombie : game.getZombies()) {
             System.out.println("Zombie" + i + " Position: (" + zombie.getPosX() + ", " + zombie.getPosY() + ")");
             i++;
         }
 
-        for (Blast blast : blasts) {
+        for (Blast blast : game.getBlasts()) {
             System.out.println("Blast" + i + " Position: (" + blast.getPosX() + ", " + blast.getPosY() + ")");
             i++;
         }
     }
-
 }

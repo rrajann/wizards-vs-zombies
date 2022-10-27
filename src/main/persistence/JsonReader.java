@@ -52,14 +52,15 @@ public class JsonReader {
         GameLogic game = new GameLogic();
 
         JSONObject wizardStats = json.getJSONObject("Wizard");
+        int x = wizardStats.getInt("x");
+        int y = wizardStats.getInt("y");
+        int dx = wizardStats.getInt("dx");
+        int dy = wizardStats.getInt("dy");
+        int health = wizardStats.getInt("health");
+        int time = wizardStats.getInt("time");
+        boolean moving = wizardStats.getBoolean("moving");
 
-        game.getWizard().setPosX(wizardStats.getInt("x"));
-        game.getWizard().setPosY(wizardStats.getInt("y"));
-        game.getWizard().setDx(wizardStats.getInt("dx"));
-        game.getWizard().setDy(wizardStats.getInt("dy"));
-        game.getWizard().setHealth(wizardStats.getInt("health"));
-        game.getWizard().setTime(wizardStats.getInt("time"));
-        game.getWizard().setMoving(wizardStats.getBoolean("moving"));
+        game.setWizard(x, y, dx, dy, health, time, moving);
 
         JSONArray blastStats = json.getJSONArray("Blasts");
         game.setBlasts(convertToBlasts(blastStats));
@@ -87,7 +88,6 @@ public class JsonReader {
 
             blasts.add(blast);
         }
-
         return blasts;
     }
 
@@ -106,8 +106,6 @@ public class JsonReader {
 
             zombies.add(zombie);
         }
-
         return zombies;
     }
-
 }

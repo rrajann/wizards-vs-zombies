@@ -38,11 +38,25 @@ public class GameLogic implements Writable {
         return wizard;
     }
 
+    // MODIFIES: this
+    // EFFECT: changes the attributes of the wizard to these parameters
+    public void setWizard(int x, int y, int dx, int dy, int health, int time, boolean moving) {
+        wizard.setPosX(x);
+        wizard.setPosY(y);
+        wizard.setDx(dx);
+        wizard.setDy(dy);
+        wizard.setHealth(health);
+        wizard.setTime(time);
+        wizard.setMoving(moving);
+    }
+
+    // MODIFIES: this
     // EFFECT: sets lists of blasts to this parameter
     public void setBlasts(List<Blast> blasts) {
         this.blasts = blasts;
     }
 
+    // MODIFIES: this
     // EFFECT: sets lists of zombies to this parameter
     public void setZombies(List<Zombie> zombies) {
         this.zombies = zombies;
@@ -123,7 +137,7 @@ public class GameLogic implements Writable {
         } else if (wizard.getDY() > 0) {
             Blast blastDown = new Blast(wizard.getPosX(), wizard.getPosY(), false, true);
             this.addBlast(blastDown);
-        } else if (wizard.getDY() < 0) {
+        } else {
             Blast blastUp = new Blast(wizard.getPosX(), wizard.getPosY(), false, false);
             this.addBlast(blastUp);
         }
