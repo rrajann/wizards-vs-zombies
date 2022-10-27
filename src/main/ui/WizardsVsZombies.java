@@ -157,6 +157,7 @@ public class WizardsVsZombies extends Thread {
         System.out.println("Press D to move right");
         System.out.println("Press K to shoot a blast");
         System.out.println("Press C to load previous game");
+        System.out.println("Press any button other than C to start a new game");
         System.out.println("Press B to quit game");
     }
 
