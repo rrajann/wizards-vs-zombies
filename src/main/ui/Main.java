@@ -8,17 +8,18 @@ public class Main {
     public static void main(String[] args) {
 
         WizardsVsZombies game = new WizardsVsZombies();
-        Scanner scanner = new Scanner(System.in);
+
+        Thread running = new Thread(game);
+        //Scanner scanner = new Scanner(System.in);
 
         game.displayMenu();
 
-        String input = scanner.next();
+        //String input = scanner.next();
 
-        if (input.equals("c")) {
-            game.loadGame();
-        }
+        //if (input.equals("c")) {
+        //    game.loadGame();
+        //}
 
-        game.start();
-        game.playerInput();
+        running.start();
     }
 }

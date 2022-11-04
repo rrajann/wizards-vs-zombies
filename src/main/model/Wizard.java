@@ -7,10 +7,12 @@ import org.json.JSONObject;
 import persistence.Writable;
 import ui.WizardsVsZombies;
 
+import java.awt.*;
+
 // Represents a wizard that the player controls through key inputs
 public class Wizard extends Entity implements Writable {
 
-    public static final int SPEED = 5;
+    public static final int SPEED = 10;
 
     private int health;
     private int speed;
@@ -29,6 +31,7 @@ public class Wizard extends Entity implements Writable {
         health = 100;
         time = 5;
         moving = false;
+        hitbox = new Rectangle(posX, posY, Entity.LIVING_X, Entity.LIVING_Y);
     }
 
     // FIELD METHODS:
@@ -91,6 +94,7 @@ public class Wizard extends Entity implements Writable {
     public void moveRight() {
         this.setDirection(1, 0);
         this.posX += dx;
+        hitbox.setLocation(posX, posY);
         this.handleBoundary();
     }
 
@@ -99,6 +103,7 @@ public class Wizard extends Entity implements Writable {
     public void moveLeft() {
         this.setDirection(-1, 0);
         this.posX += dx;
+        hitbox.setLocation(posX, posY);
         this.handleBoundary();
     }
 
@@ -107,6 +112,7 @@ public class Wizard extends Entity implements Writable {
     public void moveUp() {
         this.setDirection(0, -1);
         this.posY += dy;
+        hitbox.setLocation(posX, posY);
         this.handleBoundary();
     }
 
@@ -115,6 +121,7 @@ public class Wizard extends Entity implements Writable {
     public void moveDown() {
         this.setDirection(0, 1);
         this.posY += dy;
+        hitbox.setLocation(posX, posY);
         this.handleBoundary();
     }
 

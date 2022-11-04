@@ -4,15 +4,14 @@ import org.json.JSONObject;
 import persistence.JsonWriter;
 import persistence.Writable;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 // Represents a single zombie that approaches the wizard
 public class Zombie extends Entity implements Writable {
 
-    public static final int ZOMBIE_SPEED = 5;
-    public static final int ZOMBIE_X_SIZE = 6;
-    public static final int ZOMBIE_Y_SIZE = 3;
-    public static final int ZOMBIE_DAMAGE = 10;
+    public static final int ZOMBIE_SPEED = 1;
+    public static final int ZOMBIE_DAMAGE = 2;
 
     public Zombie(int posX, int posY) {
         super(posX, posY);

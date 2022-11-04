@@ -7,19 +7,22 @@ import model.Wizard;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.swing.*;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class WizardsVsZombies extends Thread {
+public class WizardsVsZombies extends JFrame implements Runnable {
 
     // Game board:
-    public static final int HEIGHT = 100;
-    public static final int WIDTH = 100;
-    public static final int INTERVAL = 1000;
+    public static final int HEIGHT = 1000;
+    public static final int WIDTH = 1000;
+    public static final int INTERVAL = 17;
     public static final String FILE = "./data/savedStated.json";
 
     private List<Blast> blasts;
@@ -33,14 +36,26 @@ public class WizardsVsZombies extends Thread {
     private JsonWriter saver;
     private JsonReader loader;
     private boolean load;
+    private GamePanel gamePanel;
 
     // EFFECTS: creates a new game of Wizards vs Zombies
     public WizardsVsZombies() {
+        super("Wizards Vs Zombies");
+        setSize(WIDTH, HEIGHT);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game = new GameLogic();
         play = true;
         input = new Scanner(System.in);
         saver = new JsonWriter(FILE);
         loader = new JsonReader(FILE);
+        addKeyListener(new KeyInput());
+        gamePanel = new GamePanel(this);
+        add(gamePanel);
+        setVisible(true);
+    }
+
+    public GameLogic getGameLogic() {
+        return game;
     }
 
     // MODIFIES: this
@@ -103,8 +118,9 @@ public class WizardsVsZombies extends Thread {
     public void run() {
 
         while (play && game.getWizard().getHealth() > 0) {
+
             Random random = new Random();
-            int lottery = random.nextInt(6);
+            int lottery = random.nextInt(200);
 
             if (lottery == 5) {
                 game.addZombie(generateRandomZombie());
@@ -114,7 +130,7 @@ public class WizardsVsZombies extends Thread {
             update();
 
             try {
-                WizardsVsZombies.sleep(INTERVAL);
+                Thread.sleep(INTERVAL);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -147,6 +163,7 @@ public class WizardsVsZombies extends Thread {
             System.out.println("Not a valid input.");
         }
     }
+
 
     // EFFECTS: displays the instructions to the user
     public void displayMenu() {
@@ -193,6 +210,43 @@ public class WizardsVsZombies extends Thread {
         for (Blast blast : game.getBlasts()) {
             System.out.println("Blast" + i + " Position: (" + blast.getPosX() + ", " + blast.getPosY() + ")");
             i++;
+        }
+    }
+
+
+    public void keyInput(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_W) {
+            game.getWizard().moveUp();
+            System.out.println("up");
+        }
+        if (key == KeyEvent.VK_A) {
+            game.getWizard().moveLeft();
+        }
+        if (key == KeyEvent.VK_S) {
+            game.getWizard().moveDown();
+        }
+        if (key == KeyEvent.VK_D) {
+            game.getWizard().moveRight();
+        }
+        if (key == KeyEvent.VK_K) {
+            game.basicAttack();
+        }
+        if (key == KeyEvent.VK_B) {
+            saveGame();
+            play = false;
+        }
+    }
+
+    private class KeyInput extends KeyAdapter {
+
+        private KeyInput() {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            keyInput(e);
         }
     }
 }
