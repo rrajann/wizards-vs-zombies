@@ -1,9 +1,6 @@
 package ui;
 
-import model.GameLogic;
-import model.Zombie;
-import model.Blast;
-import model.Wizard;
+import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -22,7 +19,7 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     // Game board:
     public static final int HEIGHT = 1000;
     public static final int WIDTH = 1000;
-    public static final int INTERVAL = 17;
+    public static final int INTERVAL = 100; // change back to 17 after Phase 2 demo
     public static final String FILE = "./data/savedStated.json";
 
     private List<Blast> blasts;
@@ -37,25 +34,35 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     private JsonReader loader;
     private boolean load;
     private GamePanel gamePanel;
+    private MenuPanel menuPanel;
+    private Screen screen;
 
     // EFFECTS: creates a new game of Wizards vs Zombies
     public WizardsVsZombies() {
         super("Wizards Vs Zombies");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         game = new GameLogic();
         play = true;
         input = new Scanner(System.in);
         saver = new JsonWriter(FILE);
         loader = new JsonReader(FILE);
         addKeyListener(new KeyInput());
-        gamePanel = new GamePanel(this);
-        add(gamePanel);
         setVisible(true);
+        screen = Screen.MENU;
+        load = false;
+        menuPanel = new MenuPanel(this);
+        this.add(menuPanel);
     }
 
     public GameLogic getGameLogic() {
         return game;
+    }
+
+    // EFFECTS: sets screen state
+    public void setScreen(Screen screen) {
+        this.screen = screen;
     }
 
     // MODIFIES: this
@@ -67,11 +74,13 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     // MODIFIES: this
     // EFFECTS: loads the previously saved game state
     public void loadGame() {
-        try {
-            game = loader.read();
-            System.out.println("Loaded previous game");
-        } catch (IOException e) {
-            System.out.println("Unable to read file" + " " + FILE);
+        if (this.load) {
+            try {
+                game = loader.read();
+                System.out.println("Loaded previous game");
+            } catch (IOException e) {
+                System.out.println("Unable to read file" + " " + FILE);
+            }
         }
     }
 
@@ -117,10 +126,50 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     @Override
     public void run() {
 
+        int count = 0;
+
         while (play && game.getWizard().getHealth() > 0) {
 
+            if (screen == Screen.GAME) {
+
+                if (count == 0) {
+                    this.remove(menuPanel);
+                    gamePanel = new GamePanel(this);
+                    this.add(gamePanel);
+                    count++;
+                }
+
+                Random random = new Random();
+                int lottery = random.nextInt(50);
+
+                if (lottery == 5) {
+                    game.addZombie(generateRandomZombie());
+                }
+
+                showGameStatus();
+                update();
+            }
+            System.out.println(screen);
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void init() {
+        if (screen == Screen.MENU) {
+            menuPanel = new MenuPanel(this);
+            this.add(menuPanel);
+        } else {
+            menuPanel.setVisible(false);
+            gamePanel = new GamePanel(this);
+            this.add(gamePanel);
+
             Random random = new Random();
-            int lottery = random.nextInt(200);
+            int lottery = random.nextInt(50);
 
             if (lottery == 5) {
                 game.addZombie(generateRandomZombie());
@@ -128,12 +177,6 @@ public class WizardsVsZombies extends JFrame implements Runnable {
 
             showGameStatus();
             update();
-
-            try {
-                Thread.sleep(INTERVAL);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 

@@ -12,7 +12,7 @@ public class Main {
         Thread running = new Thread(game);
         //Scanner scanner = new Scanner(System.in);
 
-        game.displayMenu();
+        //game.displayMenu();
 
         //String input = scanner.next();
 
@@ -21,5 +21,6 @@ public class Main {
         //}
 
         running.start();
+        //game.playerInput();
     }
 }

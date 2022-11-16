@@ -45,6 +45,6 @@ public class Entity {
     // REQUIRES: if this is the wizard, cannot be paired by blast and vice versa
     // EFFECT: returns true if two entities' hit-box intersect
     public boolean collision(Entity entity) {
-        return hitbox.intersects(entity.getHitbox());
+        return this.hitbox.intersects(entity.getHitbox());
     }
 }

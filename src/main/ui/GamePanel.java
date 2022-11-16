@@ -23,9 +23,11 @@ public class GamePanel extends JPanel {
         setPreferredSize(panel);
         setBackground(Color.lightGray);
         instructions = new JLabel("WASD to move, K to shoot blast, B to save and quit, P to start a new game");
+        this.add(instructions);
         instructions.setBounds(0, 0, 10, 10);
 
         this.game = game;
+        setVisible(true);
     }
 
     @Override
@@ -78,5 +80,4 @@ public class GamePanel extends JPanel {
             g.fillRect(b.getPosX() - (blastX / 2), b.getPosY() - (blastY / 2), blastX, blastY);
         }
     }
-
 }

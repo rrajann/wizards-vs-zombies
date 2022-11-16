@@ -49,6 +49,7 @@ public class Blast extends Entity implements Writable {
                 posY -= BLAST_SPEED;
             }
         }
+        hitbox.setLocation(posX, posY);
     }
 
     // EFFECTS: converts blast fields into JSON syntax

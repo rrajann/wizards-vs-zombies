@@ -107,7 +107,7 @@ public class GameLogic implements Writable {
             Zombie zombie = zombies.get(zombieIndex);
             Blast blast = blasts.get(blastIndex);
 
-            if (zombie.hitBy(blast)) {
+            if (zombie.collision(blast)) {
                 deadZombies.add(zombie);
                 deletedBlasts.add(blast);
             }
@@ -180,3 +180,5 @@ public class GameLogic implements Writable {
         return gameState;
     }
 }
+
+

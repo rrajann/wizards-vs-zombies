@@ -42,6 +42,7 @@ public class Zombie extends Entity implements Writable {
                 posX += ZOMBIE_SPEED;
             }
         }
+        hitbox.setLocation(posX, posY);
     }
 
     // EFFECTS: moves the zombie closer to the specified y argument
@@ -61,6 +62,7 @@ public class Zombie extends Entity implements Writable {
                 posY += ZOMBIE_SPEED;
             }
         }
+        hitbox.setLocation(posX, posY);
     }
 
     // EFFECTS: converts zombie fields into JSON syntax
