@@ -26,8 +26,6 @@ public class MenuPanel extends JPanel {
         loadGame();
         setVisible(true);
 
-        System.out.println("works");
-
         this.game = game;
     }
 
@@ -47,7 +45,7 @@ public class MenuPanel extends JPanel {
     private void loadGame() {
         loadGame = new JButton("Load previous game");
         //loadGame.setLocation(WIDTH / 2, HEIGHT / 2 + 100);
-        startGame.addActionListener(new ActionListener() {
+        loadGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 game.setLoad(true);

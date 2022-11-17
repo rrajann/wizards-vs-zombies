@@ -19,7 +19,7 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     // Game board:
     public static final int HEIGHT = 1000;
     public static final int WIDTH = 1000;
-    public static final int INTERVAL = 100; // change back to 17 after Phase 2 demo
+    public static final int INTERVAL = 17; // change back to 17 after Phase 2 demo
     public static final String FILE = "./data/savedStated.json";
 
     private List<Blast> blasts;
@@ -45,15 +45,18 @@ public class WizardsVsZombies extends JFrame implements Runnable {
 
         game = new GameLogic();
         play = true;
+        load = false;
+
         input = new Scanner(System.in);
         saver = new JsonWriter(FILE);
         loader = new JsonReader(FILE);
-        addKeyListener(new KeyInput());
-        setVisible(true);
         screen = Screen.MENU;
-        load = false;
+        addKeyListener(new KeyInput());
+
         menuPanel = new MenuPanel(this);
         this.add(menuPanel);
+
+        setVisible(true);
     }
 
     public GameLogic getGameLogic() {
@@ -133,9 +136,7 @@ public class WizardsVsZombies extends JFrame implements Runnable {
             if (screen == Screen.GAME) {
 
                 if (count == 0) {
-                    this.remove(menuPanel);
-                    gamePanel = new GamePanel(this);
-                    this.add(gamePanel);
+                    initGame();
                     count++;
                 }
 
@@ -146,38 +147,35 @@ public class WizardsVsZombies extends JFrame implements Runnable {
                     game.addZombie(generateRandomZombie());
                 }
 
-                showGameStatus();
                 update();
+
             }
-            System.out.println(screen);
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(INTERVAL);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    public void init() {
-        if (screen == Screen.MENU) {
-            menuPanel = new MenuPanel(this);
-            this.add(menuPanel);
-        } else {
-            menuPanel.setVisible(false);
-            gamePanel = new GamePanel(this);
-            this.add(gamePanel);
+    public void initGame() {
+        remove(menuPanel);
+        gamePanel = new GamePanel(this);
+        this.add(gamePanel);
+        validate();
+        repaint();
+        this.requestFocusInWindow();
+        loadGame();
+    }
 
-            Random random = new Random();
-            int lottery = random.nextInt(50);
-
-            if (lottery == 5) {
-                game.addZombie(generateRandomZombie());
-            }
-
-            showGameStatus();
-            update();
-        }
+    public void initMenu() {
+        remove(gamePanel);
+        menuPanel = new MenuPanel(this);
+        this.add(menuPanel);
+        validate();
+        repaint();
+        this.requestFocusInWindow();
     }
 
     // EFFECTS: changes the position of the wizard / throws a blast depending on player input

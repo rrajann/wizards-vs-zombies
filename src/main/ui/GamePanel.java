@@ -21,9 +21,10 @@ public class GamePanel extends JPanel {
     public GamePanel(WizardsVsZombies game) {
         Dimension panel = new Dimension(WizardsVsZombies.WIDTH, WizardsVsZombies.HEIGHT);
         setPreferredSize(panel);
-        setBackground(Color.lightGray);
+        setBackground(Color.black);
         instructions = new JLabel("WASD to move, K to shoot blast, B to save and quit, P to start a new game");
         this.add(instructions);
+        instructions.setForeground(Color.white);
         instructions.setBounds(0, 0, 10, 10);
 
         this.game = game;
