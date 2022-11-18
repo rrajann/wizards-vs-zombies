@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class GamePanel extends JPanel {
@@ -18,17 +20,32 @@ public class GamePanel extends JPanel {
     private final int blastX = Entity.BLAST_X_SIZE;
     private final int blastY = Entity.BLAST_Y_SIZE;
 
+
+    private JButton shoot;
+
     public GamePanel(WizardsVsZombies game) {
         Dimension panel = new Dimension(WizardsVsZombies.WIDTH, WizardsVsZombies.HEIGHT);
         setPreferredSize(panel);
         setBackground(Color.black);
-        instructions = new JLabel("WASD to move, K to shoot blast, B to save and quit, P to start a new game");
+        instructions = new JLabel("WASD to move, K to shoot blast, B to save and quit");
         this.add(instructions);
         instructions.setForeground(Color.white);
         instructions.setBounds(0, 0, 10, 10);
+        shootBlast();
 
         this.game = game;
         setVisible(true);
+    }
+
+    private void shootBlast() {
+        shoot = new JButton("Shoot blast");
+        shoot.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                game.getGameLogic().basicAttack();
+            }
+        });
+        add(shoot);
     }
 
     @Override

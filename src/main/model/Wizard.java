@@ -66,12 +66,14 @@ public class Wizard extends Entity implements Writable {
     // EFFECTS: sets the x position
     public void setPosX(int x) {
         posX = x;
+        hitbox.setLocation(x, posY);
     }
 
     // MODIFIES: this
     // EFFECTS: sets the x position
     public void setPosY(int y) {
         posY = y;
+        hitbox.setLocation(posX, y);
     }
 
     // MODIFIES: this

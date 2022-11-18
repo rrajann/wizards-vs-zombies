@@ -59,8 +59,13 @@ public class WizardsVsZombies extends JFrame implements Runnable {
         setVisible(true);
     }
 
+    // EFFECTS: returns the game logic
     public GameLogic getGameLogic() {
         return game;
+    }
+
+    public void setPlay(boolean bool) {
+        play = bool;
     }
 
     // EFFECTS: sets screen state
@@ -84,6 +89,8 @@ public class WizardsVsZombies extends JFrame implements Runnable {
             } catch (IOException e) {
                 System.out.println("Unable to read file" + " " + FILE);
             }
+        } else {
+            game.resetGame();
         }
     }
 
@@ -131,15 +138,11 @@ public class WizardsVsZombies extends JFrame implements Runnable {
 
         int count = 0;
 
-        while (play && game.getWizard().getHealth() > 0) {
+        while (play) {
 
-            if (screen == Screen.GAME) {
+            if (screen == Screen.GAME && game.getWizard().getHealth() > 0) {
 
-                if (count == 0) {
-                    initGame();
-                    count++;
-                }
-
+                this.requestFocusInWindow();
                 Random random = new Random();
                 int lottery = random.nextInt(50);
 
@@ -150,6 +153,7 @@ public class WizardsVsZombies extends JFrame implements Runnable {
                 update();
 
             }
+            System.out.println(screen);
 
             try {
                 Thread.sleep(INTERVAL);
@@ -171,11 +175,11 @@ public class WizardsVsZombies extends JFrame implements Runnable {
 
     public void initMenu() {
         remove(gamePanel);
+        setScreen(Screen.MENU);
         menuPanel = new MenuPanel(this);
         this.add(menuPanel);
         validate();
         repaint();
-        this.requestFocusInWindow();
     }
 
     // EFFECTS: changes the position of the wizard / throws a blast depending on player input
@@ -276,7 +280,7 @@ public class WizardsVsZombies extends JFrame implements Runnable {
         }
         if (key == KeyEvent.VK_B) {
             saveGame();
-            play = false;
+            initMenu();
         }
     }
 

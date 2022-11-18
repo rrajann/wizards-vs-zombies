@@ -24,6 +24,7 @@ public class MenuPanel extends JPanel {
         setBackground(Color.black);
         startGame();
         loadGame();
+        quitGame();
         setVisible(true);
 
         this.game = game;
@@ -31,11 +32,13 @@ public class MenuPanel extends JPanel {
 
     private void startGame() {
         startGame = new JButton("Start new game");
-        //startGame.setLocation(WIDTH / 2, HEIGHT / 2);
+        //startGame.setBounds(WIDTH / 2, 0, 100, 20);
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                game.setLoad(false);
                 game.setScreen(Screen.GAME);
+                game.initGame();
                 System.out.println("started");
             }
         });
@@ -44,21 +47,29 @@ public class MenuPanel extends JPanel {
 
     private void loadGame() {
         loadGame = new JButton("Load previous game");
-        //loadGame.setLocation(WIDTH / 2, HEIGHT / 2 + 100);
+        //startGame.setBounds(WIDTH / 2, HEIGHT / 2 + 150, 100, 20);
         loadGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 game.setLoad(true);
                 game.setScreen(Screen.GAME);
+                game.initGame();
             }
         });
         this.add(loadGame);
     }
 
     private void quitGame() {
-        loadGame = new JButton("Quit");
-        //loadGame.setLocation(WIDTH / 2, HEIGHT / 2 + 200);
-        //startGame.addActionListener();
+        quit = new JButton("Quit");
+        //startGame.setBounds(WIDTH / 2, HEIGHT / 2 + 300, 100, 20);
+        quit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                game.setVisible(false);
+                game.dispose();
+                game.setPlay(false);
+            }
+        });
         this.add(quit);
     }
 

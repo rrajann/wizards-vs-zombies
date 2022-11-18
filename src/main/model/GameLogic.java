@@ -150,12 +150,22 @@ public class GameLogic implements Writable {
         boolean gotHit = false;
 
         for (Zombie zombie : zombies) {
-            if (wizard.hitBy(zombie)) {
+            if (wizard.collision(zombie)) {
                 wizard.setHealth(wizard.getHealth() - Zombie.ZOMBIE_DAMAGE);
                 gotHit = true;
             }
         }
         return gotHit;
+    }
+
+    // MODIFIES: this
+    // EFFECT: sets the game to its original state, with wizard at center (full health) and no blasts/zombies
+    public void resetGame() {
+        zombies.removeAll(zombies);
+        blasts.removeAll(blasts);
+        wizard.setPosX(WizardsVsZombies.WIDTH / 2);
+        wizard.setPosY(WizardsVsZombies.HEIGHT / 2);
+        wizard.setHealth(100);
     }
 
     // EFFECTS: converts game state into JSON syntax
