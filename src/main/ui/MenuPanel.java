@@ -5,9 +5,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import model.Screen;
-import ui.WizardsVsZombies;
-
 public class MenuPanel extends JPanel {
 
     private static final int WIDTH = WizardsVsZombies.WIDTH;
@@ -37,7 +34,7 @@ public class MenuPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 game.setLoad(false);
-                game.setScreen(Screen.GAME);
+                game.setScreen(WizardsVsZombies.Screen.GAME);
                 game.initGame();
                 System.out.println("started");
             }
@@ -52,7 +49,7 @@ public class MenuPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 game.setLoad(true);
-                game.setScreen(Screen.GAME);
+                game.setScreen(WizardsVsZombies.Screen.GAME);
                 game.initGame();
             }
         });

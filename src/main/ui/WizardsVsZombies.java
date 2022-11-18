@@ -8,8 +8,6 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.Key;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -293,5 +291,9 @@ public class WizardsVsZombies extends JFrame implements Runnable {
         public void keyPressed(KeyEvent e) {
             keyInput(e);
         }
+    }
+
+    public enum Screen {
+        MENU, GAME
     }
 }
