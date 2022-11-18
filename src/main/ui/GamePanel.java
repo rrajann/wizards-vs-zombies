@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+// represents the panel that draws each frame of the current game
 public class GamePanel extends JPanel {
 
     private WizardsVsZombies game;
@@ -23,6 +24,7 @@ public class GamePanel extends JPanel {
 
     private JButton shoot;
 
+    // EFFECTS: instantiates a new game panel
     public GamePanel(WizardsVsZombies game) {
         Dimension panel = new Dimension(WizardsVsZombies.WIDTH, WizardsVsZombies.HEIGHT);
         setPreferredSize(panel);
@@ -37,6 +39,8 @@ public class GamePanel extends JPanel {
         setVisible(true);
     }
 
+    // MODIFIES: WizardsVsZombies
+    // EFFECTS: shoots a blast to the game
     private void shootBlast() {
         shoot = new JButton("Shoot blast");
         shoot.addActionListener(new ActionListener() {
@@ -48,6 +52,8 @@ public class GamePanel extends JPanel {
         add(shoot);
     }
 
+    // MODIFIES: this
+    // EFFECTS: draws all the current game state and repaints
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -56,6 +62,8 @@ public class GamePanel extends JPanel {
         repaint();
     }
 
+    // MODIFIES: this
+    // EFFECTS: helper method for paintComponent (draws game state)
     private void drawGame(Graphics g) {
         drawWizard(g);
         drawBlasts(g);
@@ -63,17 +71,22 @@ public class GamePanel extends JPanel {
         drawHealth(g);
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays the health of the wizard
     private void drawHealth(Graphics g) {
         Wizard wizard = game.getGameLogic().getWizard();
 
         g.drawString(toString(), wizard.getPosX() - (livingX * 2), wizard.getPosY() + livingY);
     }
 
+    // EFFECTS: toString override to show the wizard's health
     @Override
     public String toString() {
         return "Health: " + game.getGameLogic().getWizard().getHealth();
     }
 
+    // MODIFIES: this
+    // EFFECTS: draws wizard
     private void drawWizard(Graphics g) {
         g.setColor(Color.blue);
         Wizard wizard = game.getGameLogic().getWizard();
@@ -81,6 +94,8 @@ public class GamePanel extends JPanel {
         g.fillRect(wizard.getPosX() - (livingX / 2), wizard.getPosY() - (livingY / 2), livingX, livingY);
     }
 
+    // MODIFIES: this
+    // EFFECTS: draws zombie
     private void drawZombies(Graphics g) {
         g.setColor(new Color(41, 75, 22));
         List<Zombie> zombies = game.getGameLogic().getZombies();
@@ -90,6 +105,8 @@ public class GamePanel extends JPanel {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: draws blasts
     private void drawBlasts(Graphics g) {
         g.setColor(new Color(0, 235, 255));
         List<Blast> blasts = game.getGameLogic().getBlasts();

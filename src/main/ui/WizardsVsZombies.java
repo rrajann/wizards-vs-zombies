@@ -256,7 +256,8 @@ public class WizardsVsZombies extends JFrame implements Runnable {
         }
     }
 
-
+    // MODIFIES: this
+    // EFFECTS: moves the wizard's position and shoots blasts corresponding to the designated button pressed
     public void keyInput(KeyEvent e) {
         int key = e.getKeyCode();
 
@@ -282,6 +283,7 @@ public class WizardsVsZombies extends JFrame implements Runnable {
         }
     }
 
+    // A key adapter that records current key event
     private class KeyInput extends KeyAdapter {
 
         private KeyInput() {
