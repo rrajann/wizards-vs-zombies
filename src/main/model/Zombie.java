@@ -10,7 +10,7 @@ import java.util.ArrayList;
 // Represents a single zombie that approaches the wizard
 public class Zombie extends Entity implements Writable {
 
-    public static final int ZOMBIE_SPEED = 1;
+    public static final int ZOMBIE_SPEED = 2;
     public static final int ZOMBIE_DAMAGE = 2;
 
     public Zombie(int posX, int posY) {
