@@ -83,17 +83,16 @@ public class Wizard extends Entity implements Writable {
     // MODIFIES: this
     // EFFECTS: Moves the wizard based on the dy dx value
     public void move() {
-        isMoving();
         posX += dx;
         posY += dy;
         hitbox.setLocation(posX, posY);
-        setD();
+        updateLastDirection();
         this.handleBoundary();
     }
 
     // MODIFIES: this
     // EFFECTS: changes last direction according to wizard dx dy value
-    public void setD() {
+    public void updateLastDirection() {
         if (dx > 0) {
             lastDirection = Direction.RIGHT;
         }
@@ -169,11 +168,6 @@ public class Wizard extends Entity implements Writable {
         this.time = t;
     }
 
-    // EFFECTS: stops the movement of the wizard, but keeps its dy/dx
-    // MODIFIES: this
-    public void setMoving(boolean b) {
-        this.moving = b;
-    }
 
     // EFFECTS: converts wizard fields into JSON syntax
     @Override

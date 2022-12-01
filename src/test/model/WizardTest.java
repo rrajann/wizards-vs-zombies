@@ -12,6 +12,9 @@ public class WizardTest {
     private int speed = Wizard.SPEED;
     private int width = WizardsVsZombies.WIDTH;
 
+    private static int x = WizardsVsZombies.WIDTH / 2;
+    private static int y = WizardsVsZombies.HEIGHT / 2;
+
     @BeforeEach
     public void before() {
         wizard = new Wizard(50, 20);
@@ -102,6 +105,35 @@ public class WizardTest {
         assertEquals(speed, wizard.getDX());
         wizard.moveLeft();
         assertEquals(-speed, wizard.getDX());
+    }
+
+    @Test
+    public void setDTest() {
+        wizard.moveRight();
+        wizard.updateLastDirection();
+        assertEquals(Entity.Direction.RIGHT, wizard.getLastDirection());
+        wizard.moveLeft();
+        wizard.updateLastDirection();
+        assertEquals(Entity.Direction.LEFT, wizard.getLastDirection());
+        wizard.moveUp();
+        wizard.updateLastDirection();
+        assertEquals(Entity.Direction.UP, wizard.getLastDirection());
+        wizard.moveDown();
+        wizard.updateLastDirection();
+        assertEquals(Entity.Direction.DOWN, wizard.getLastDirection());
+    }
+
+    @Test
+    public void moveTest() {
+        assertFalse(wizard.isMoving());
+        wizard.setDirection(1, 0);
+        wizard.move();
+        assertEquals(50 + speed, wizard.getPosX());
+        assertTrue(wizard.isMoving());
+        wizard.setDirection(0, 1);
+        wizard.move();
+        assertEquals(20 + speed, wizard.getPosY());
+        assertTrue(wizard.isMoving());
     }
 
     @Test

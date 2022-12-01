@@ -66,22 +66,10 @@ public abstract class Entity {
         return lastDirection;
     }
 
-    // EFFECT: returns true if this and argument occupy the same position
-    // REQUIRES: if this is wizard, cannot be paired by blast and vice versa
-    public boolean hitBy(Entity entity) {
-        return (this.posX == entity.getPosX() && this.posY == entity.getPosY());
-    }
-
     // REQUIRES: if this is the wizard, cannot be paired by blast and vice versa
     // EFFECT: returns true if two entities' hit-box intersect
     public boolean collision(Entity entity) {
         return this.hitbox.intersects(entity.getHitbox());
-    }
-
-    // MODIFIES: this
-    // EFFECT: changes the hitbox of this
-    public void setHitbox(Rectangle r) {
-        hitbox = r;
     }
 
     // EFFECTS: keeps entity within the boundary of the game
