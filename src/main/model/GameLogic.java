@@ -2,7 +2,6 @@ package model;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import persistence.JsonWriter;
 import persistence.Writable;
 import ui.WizardsVsZombies;
 
@@ -15,6 +14,8 @@ public class GameLogic implements Writable {
     private List<Blast> blasts;
     private List<Zombie> zombies;
     private Wizard wizard;
+
+
 
     // EFFECT: creates a collection of entities, including one wizard and a list of wizards and blasts
     public GameLogic() {
@@ -47,7 +48,6 @@ public class GameLogic implements Writable {
         wizard.setDy(dy);
         wizard.setHealth(health);
         wizard.setTime(time);
-        wizard.setMoving(moving);
     }
 
     // MODIFIES: this
@@ -66,7 +66,7 @@ public class GameLogic implements Writable {
     // MODIFIES: this
     public void nextBlasts() {
         for (Blast blast : blasts) {
-            blast.moveBlast();
+            blast.move();
         }
     }
 
@@ -119,6 +119,7 @@ public class GameLogic implements Writable {
 
         if (zombies.removeAll(deadZombies)) {
             blasts.removeAll(deletedBlasts);
+            EventLog.getInstance().logEvent(new Event("Blast absorbed by zombie! Number of blasts: " + blasts.size()));
             return true;
         }
         return false;
@@ -128,19 +129,21 @@ public class GameLogic implements Writable {
     // MODIFIES: this
     public void basicAttack() {
 
-        if (wizard.getDX() > 0) {
+        if (wizard.getLastDirection().equals(Entity.Direction.RIGHT)) {
             Blast blastRight = new Blast(wizard.getPosX(), wizard.getPosY(), true, true);
             this.addBlast(blastRight);
-        } else if (wizard.getDX() < 0) {
+        } else if (wizard.getLastDirection().equals(Entity.Direction.LEFT)) {
             Blast blastLeft = new Blast(wizard.getPosX(), wizard.getPosY(), true, false);
             this.addBlast(blastLeft);
-        } else if (wizard.getDY() > 0) {
+        } else if (wizard.getLastDirection().equals(Entity.Direction.DOWN)) {
             Blast blastDown = new Blast(wizard.getPosX(), wizard.getPosY(), false, true);
             this.addBlast(blastDown);
-        } else {
+        } else if (wizard.getLastDirection().equals(Entity.Direction.UP)) {
             Blast blastUp = new Blast(wizard.getPosX(), wizard.getPosY(), false, false);
             this.addBlast(blastUp);
         }
+
+        EventLog.getInstance().logEvent(new Event("Wizard threw a blast! Number of blasts: " + blasts.size()));
     }
 
     // EFFECT: if the wizard has gotten hit by any of the zombies, decrease its health

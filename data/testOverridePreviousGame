@@ -1,0 +1,13 @@
+{
+  "Blasts": [],
+  "Zombies": [],
+  "Wizard": {
+    "dx": 0,
+    "dy": 5,
+    "x": 5,
+    "y": 10,
+    "health": 100,
+    "time": 5,
+    "moving": false
+  }
+}

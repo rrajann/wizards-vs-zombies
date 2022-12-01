@@ -37,3 +37,20 @@ many interactive components.
 - You can save and quit the game by pressing "b" which will take you to the main menu (automatically saves)
 - While in the main menu, you can choose to choose a new game or load the previously saved game by pressing the 
   corresponding buttons
+
+## Phase 4: Task 2
+
+### Sample:
+    Wed Nov 30 18:33:41 PST 2022
+    Wizard threw a blast! Number of blasts: 1
+    Wed Nov 30 18:33:43 PST 2022
+    Wizard threw a blast! Number of blasts: 2
+    Wed Nov 30 18:33:44 PST 2022
+    Wizard threw a blast! Number of blasts: 3
+    Wed Nov 30 18:33:45 PST 2022
+    Blast absorbed by zombie! Number of blasts: 2
+    Wed Nov 30 18:33:46 PST 2022
+    Wizard threw a blast! Number of blasts: 1
+
+GameLogic class depends on the EventLog class, as it calls EventLog.getInstance
+, and directly changes the single instance of EventLog by adding an event.

@@ -24,11 +24,11 @@ public class WizardTest {
     public void getPosXTestLeftRight() {
         assertEquals(50, wizard.getPosX());
         wizard.moveRight();
-        assertEquals(55, wizard.getPosX());
+        assertEquals(50 + speed, wizard.getPosX());
         wizard.moveRight();
-        assertEquals(60, wizard.getPosX());
+        assertEquals(50 + speed * 2, wizard.getPosX());
         wizard.moveLeft();
-        assertEquals(55, wizard.getPosX());
+        assertEquals(50 + speed, wizard.getPosX());
     }
 
     // MOVING UP/DOWN
@@ -48,9 +48,9 @@ public class WizardTest {
     public void getPosXTestUpDownLeftRight() {
         assertEquals(50, wizard.getPosX());
         wizard.moveRight();
-        assertEquals(55, wizard.getPosX());
+        assertEquals(50 + speed, wizard.getPosX());
         wizard.moveUp();
-        assertEquals(55, wizard.getPosX());
+        assertEquals(50 + speed, wizard.getPosX());
         wizard.moveLeft();
         assertEquals(50, wizard.getPosX());
         wizard.moveDown();
@@ -74,11 +74,11 @@ public class WizardTest {
     public void getPosYTestUpDown() {
         assertEquals(20, wizard.getPosY());
         wizard.moveUp();
-        assertEquals(15, wizard.getPosY());
+        assertEquals(20 - speed, wizard.getPosY());
         wizard.moveUp();
-        assertEquals(10, wizard.getPosY());
+        assertEquals(20 - speed * 2, wizard.getPosY());
         wizard.moveDown();
-        assertEquals(15, wizard.getPosY());
+        assertEquals(20 - speed, wizard.getPosY());
     }
 
     // MOVING UP/DOWN/LEFT/RIGHT
@@ -88,25 +88,25 @@ public class WizardTest {
         wizard.moveRight();
         assertEquals(20, wizard.getPosY());
         wizard.moveUp();
-        assertEquals(15, wizard.getPosY());
+        assertEquals(20 - speed, wizard.getPosY());
         wizard.moveLeft();
-        assertEquals(15, wizard.getPosY());
+        assertEquals(20 - speed, wizard.getPosY());
         wizard.moveDown();
         assertEquals(20, wizard.getPosY());
     }
 
     @Test
     public void getDXTestRightLeft() {
-        assertEquals(speed, wizard.getDX());
+        assertEquals(0, wizard.getDX());
         wizard.moveRight();
-        assertEquals(5, wizard.getDX());
+        assertEquals(speed, wizard.getDX());
         wizard.moveLeft();
-        assertEquals(-5, wizard.getDX());
+        assertEquals(-speed, wizard.getDX());
     }
 
     @Test
     public void getDXTestUpDown() {
-        assertEquals(speed, wizard.getDX());
+        assertEquals(0, wizard.getDX());
         wizard.moveUp();
         assertEquals(0, wizard.getDX());
         wizard.moveDown();
@@ -115,13 +115,13 @@ public class WizardTest {
 
     @Test
     public void getDXTestUpDownLeftRight() {
-        assertEquals(speed, wizard.getDX());
+        assertEquals(0, wizard.getDX());
         wizard.moveRight();
-        assertEquals(5, wizard.getDX());
+        assertEquals(speed, wizard.getDX());
         wizard.moveUp();
         assertEquals(0, wizard.getDX());
         wizard.moveLeft();
-        assertEquals(-5, wizard.getDX());
+        assertEquals(-speed, wizard.getDX());
         wizard.moveDown();
         assertEquals(0, wizard.getDX());
     }
@@ -139,9 +139,9 @@ public class WizardTest {
     public void getDYTestUpDown() {
         assertEquals(0, wizard.getDY());
         wizard.moveUp();
-        assertEquals(-5, wizard.getDY());
+        assertEquals(-speed, wizard.getDY());
         wizard.moveDown();
-        assertEquals(5, wizard.getDY());
+        assertEquals(speed, wizard.getDY());
     }
 
     @Test
@@ -150,11 +150,11 @@ public class WizardTest {
         wizard.moveRight();
         assertEquals(0, wizard.getDY());
         wizard.moveUp();
-        assertEquals(-5, wizard.getDY());
+        assertEquals(-speed, wizard.getDY());
         wizard.moveLeft();
         assertEquals(0, wizard.getDY());
         wizard.moveDown();
-        assertEquals(5, wizard.getDY());
+        assertEquals(speed, wizard.getDY());
     }
 
     @Test
@@ -178,56 +178,8 @@ public class WizardTest {
     @Test
     public void isMovingTest() {
         assertFalse(wizard.isMoving());
-        wizard.setMoving(true);
+        wizard.moveRight();
         assertTrue(wizard.isMoving());
-        wizard.setMoving(false);
-        assertFalse(wizard.isMoving());
-        wizard.setMoving(false);
-        assertFalse(wizard.isMoving());
-    }
-
-    @Test
-    public void handleBoundaryTestRight() {
-        Wizard rightWizard = new Wizard(width - (speed + 2), 0);
-        rightWizard.moveRight();
-        assertEquals(width - 2, rightWizard.getPosX());
-        rightWizard.moveRight();
-        assertEquals(width, rightWizard.getPosX());
-        rightWizard.moveRight();
-        assertEquals(width, rightWizard.getPosX());
-    }
-
-    @Test
-    public void handleBoundaryTestLeft() {
-        Wizard leftWizard = new Wizard(speed + 2, 0);
-        leftWizard.moveLeft();
-        assertEquals(2, leftWizard.getPosX());
-        leftWizard.moveLeft();
-        assertEquals(0, leftWizard.getPosX());
-        leftWizard.moveLeft();
-        assertEquals(0, leftWizard.getPosX());
-    }
-
-    @Test
-    public void handleBoundaryTestUp() {
-        Wizard upWizard = new Wizard(0, speed + 2);
-        upWizard.moveUp();
-        assertEquals(2, upWizard.getPosY());
-        upWizard.moveUp();
-        assertEquals(0, upWizard.getPosY());
-        upWizard.moveUp();
-        assertEquals(0, upWizard.getPosY());
-    }
-
-    @Test
-    public void handleBoundaryTestDown() {
-        Wizard downWizard = new Wizard(0, width - (speed + 2));
-        downWizard.moveDown();
-        assertEquals(width - 2, downWizard.getPosY());
-        downWizard.moveDown();
-        assertEquals(width, downWizard.getPosY());
-        downWizard.moveDown();
-        assertEquals(width, downWizard.getPosY());
     }
 
 }

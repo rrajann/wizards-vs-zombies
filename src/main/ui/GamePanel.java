@@ -2,12 +2,16 @@ package ui;
 
 import model.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 // represents the panel that draws each frame of the current game
@@ -15,12 +19,19 @@ public class GamePanel extends JPanel {
 
     private WizardsVsZombies game;
     private JLabel background;
-    private JLabel instructions;
     private final int livingX = Entity.LIVING_X;
     private final int livingY = Entity.LIVING_Y;
     private final int blastX = Entity.BLAST_X_SIZE;
     private final int blastY = Entity.BLAST_Y_SIZE;
 
+    // IMAGES (test):
+    private Image movingImage;
+    private Image idleImage;
+    private BufferedImage moving;
+    private BufferedImage idle;
+    private List<Image> images = new ArrayList<>();
+    private int count;
+    Animation wizard;
 
     private JButton shoot;
 
@@ -29,11 +40,12 @@ public class GamePanel extends JPanel {
         Dimension panel = new Dimension(WizardsVsZombies.WIDTH, WizardsVsZombies.HEIGHT);
         setPreferredSize(panel);
         setBackground(Color.black);
-        instructions = new JLabel("WASD to move, K to shoot blast, B to save and quit");
+        JLabel instructions = new JLabel("WASD to move, K to shoot blast, B to save and quit");
         this.add(instructions);
         instructions.setForeground(Color.white);
         instructions.setBounds(0, 0, 10, 10);
         shootBlast();
+
 
         this.game = game;
         setVisible(true);
@@ -65,7 +77,7 @@ public class GamePanel extends JPanel {
     // MODIFIES: this
     // EFFECTS: helper method for paintComponent (draws game state)
     private void drawGame(Graphics g) {
-        drawWizard(g);
+        wizard = new Animation(g, game);
         drawBlasts(g);
         drawZombies(g);
         drawHealth(g);
@@ -85,14 +97,6 @@ public class GamePanel extends JPanel {
         return "Health: " + game.getGameLogic().getWizard().getHealth();
     }
 
-    // MODIFIES: this
-    // EFFECTS: draws wizard
-    private void drawWizard(Graphics g) {
-        g.setColor(Color.blue);
-        Wizard wizard = game.getGameLogic().getWizard();
-
-        g.fillRect(wizard.getPosX() - (livingX / 2), wizard.getPosY() - (livingY / 2), livingX, livingY);
-    }
 
     // MODIFIES: this
     // EFFECTS: draws zombie

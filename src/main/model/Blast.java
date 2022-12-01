@@ -8,7 +8,7 @@ import java.awt.*;
 // Represents a single blast that can be thrown by the wizard
 public class Blast extends Entity implements Writable {
 
-    public static final int BLAST_SPEED = 10;
+    public static final int BLAST_SPEED = 20;
 
     private boolean horizontal;
     private boolean direction;
@@ -33,20 +33,24 @@ public class Blast extends Entity implements Writable {
         return direction;
     }
 
-    // EFFECTS: moves the blast by i;ts speed
+    // EFFECTS: moves the blast by its speed
     // MODIFIES: this
-    public void moveBlast() {
+    public void move() {
         if (horizontal) {
             if (direction) {
                 posX += BLAST_SPEED;
+                lastDirection = Direction.RIGHT;
             } else {
                 posX -= BLAST_SPEED;
+                lastDirection = Direction.LEFT;
             }
         } else {
             if (direction) {
                 posY += BLAST_SPEED;
+                lastDirection = Direction.DOWN;
             } else {
                 posY -= BLAST_SPEED;
+                lastDirection = Direction.UP;
             }
         }
         hitbox.setLocation(posX, posY);

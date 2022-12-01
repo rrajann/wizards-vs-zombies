@@ -17,7 +17,7 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     // Game board:
     public static final int HEIGHT = 1000;
     public static final int WIDTH = 1000;
-    public static final int INTERVAL = 17; // change back to 17 after Phase 2 demo
+    public static final int INTERVAL = 35; // change back to 17 after Phase 2 demo
     public static final String FILE = "./data/savedStated.json";
 
     private List<Blast> blasts;
@@ -34,18 +34,30 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     private GamePanel gamePanel;
     private MenuPanel menuPanel;
     private Screen screen;
+    private List<GameLogic> gameStates;
+    private WizardsVsZombies previousTick;
+    private int count;
 
     // EFFECTS: creates a new game of Wizards vs Zombies
     public WizardsVsZombies() {
         super("Wizards Vs Zombies");
         setSize(WIDTH, HEIGHT);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                play = false;
+                setVisible(false);
+                dispose();
+            }
+        });
 
         game = new GameLogic();
         play = true;
         load = false;
+        previousTick = this;
+        count = 0;
 
-        input = new Scanner(System.in);
         saver = new JsonWriter(FILE);
         loader = new JsonReader(FILE);
         screen = Screen.MENU;
@@ -55,6 +67,13 @@ public class WizardsVsZombies extends JFrame implements Runnable {
         this.add(menuPanel);
 
         setVisible(true);
+    }
+
+
+
+    // EFFECTS: returns the count
+    public int getCount() {
+        return count;
     }
 
     // EFFECTS: returns the game logic
@@ -116,25 +135,10 @@ public class WizardsVsZombies extends JFrame implements Runnable {
         return randomZombie;
     }
 
-    // EFFECTS: moves wizard based on player input
-    // MODIFIES: this
-    public void playerInput() {
-        String key = null;
-
-        while (game.getWizard().getHealth() > 0 && play) {
-            key = input.next();
-
-            controls(key);
-            showGameStatus();
-        }
-    }
-
     // EFFECTS: creates a game loop that runs until the wizards health reaches 0
     // MODIFIES: this
     @Override
     public void run() {
-
-        int count = 0;
 
         while (play) {
 
@@ -149,6 +153,9 @@ public class WizardsVsZombies extends JFrame implements Runnable {
                 }
 
                 update();
+                if (count++ % 3 == 0) {
+                    count++;
+                }
 
             }
             System.out.println(screen);
@@ -159,8 +166,13 @@ public class WizardsVsZombies extends JFrame implements Runnable {
                 throw new RuntimeException(e);
             }
         }
+
+        printLog(EventLog.getInstance());
     }
 
+
+    // MODIFIES: this
+    // EFFECTS: exits the menu panel and initialises the game
     public void initGame() {
         remove(menuPanel);
         gamePanel = new GamePanel(this);
@@ -171,6 +183,8 @@ public class WizardsVsZombies extends JFrame implements Runnable {
         loadGame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: exits the game panel and initialises the game
     public void initMenu() {
         remove(gamePanel);
         setScreen(Screen.MENU);
@@ -180,58 +194,46 @@ public class WizardsVsZombies extends JFrame implements Runnable {
         repaint();
     }
 
-    // EFFECTS: changes the position of the wizard / throws a blast depending on player input
-    // MODIFIES: this
-    public void controls(String key) {
-
-        if (key.equals("w")) {
-            game.getWizard().moveUp();
-            System.out.println("Wizard moved up.");
-        } else if (key.equals("a")) {
-            game.getWizard().moveLeft();
-            System.out.println("Wizard moved left.");
-        } else if (key.equals("s")) {
-            game.getWizard().moveDown();
-            System.out.println("Wizard moved down.");
-        } else if (key.equals("d")) {
-            game.getWizard().moveRight();
-            System.out.println("Wizard moved right.");
-        } else if (key.equals("k")) {
-            game.basicAttack();
-            System.out.println("Wizard threw a blast!");
-        } else if (key.equals("b")) {
-            saveGame();
-            play = false;
-        } else {
-            System.out.println("Not a valid input.");
-        }
-    }
-
-
-    // EFFECTS: displays the instructions to the user
-    public void displayMenu() {
-        System.out.println("Welcome to Wizards vs Zombies, here are the controls:");
-        System.out.println("Press W to move up");
-        System.out.println("Press A to move left");
-        System.out.println("Press S to move down");
-        System.out.println("Press D to move right");
-        System.out.println("Press K to shoot a blast");
-        System.out.println("Press C to load previous game");
-        System.out.println("Press any button other than C to start a new game");
-        System.out.println("Press B to quit game");
-    }
-
     // EFFECTS: updates the game state to the next frame
     // MODIFIES: this
     public void update() {
+
+
         if (game.wizardDamaged()) {
             System.out.println("Wizard got damaged!");
         }
         if (game.deleteZombies()) {
             System.out.println("Zombie hit and down!");
         }
+
+        Wizard wizard = game.getWizard();
+
         game.nextZombies();
         game.nextBlasts();
+        wizard.move();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: removes blasts if they get to the boundary
+    public void blastBoundary() {
+
+        List<Blast> blasts = game.getBlasts();
+
+        for (Blast b : blasts) {
+            if (!(0 < b.getPosX()) || !(b.getPosX() < WIDTH)) {
+                blasts.remove(b);
+            } else if (!(0 < b.getPosY()) || !(b.getPosY() < HEIGHT)) {
+                blasts.remove(b);
+            }
+        }
+    }
+
+    // EFFECTS: prints the event log
+    public void printLog(EventLog el) {
+
+        for (Event e : el) {
+            System.out.println(e);
+        }
     }
 
     // EFFECTS: prints the current state of the game
@@ -260,19 +262,19 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     // EFFECTS: moves the wizard's position and shoots blasts corresponding to the designated button pressed
     public void keyInput(KeyEvent e) {
         int key = e.getKeyCode();
+        int speed = Wizard.SPEED;
 
         if (key == KeyEvent.VK_W) {
-            game.getWizard().moveUp();
-            System.out.println("up");
+            game.getWizard().setDy(-speed);
         }
         if (key == KeyEvent.VK_A) {
-            game.getWizard().moveLeft();
+            game.getWizard().setDx(-speed);
         }
         if (key == KeyEvent.VK_S) {
-            game.getWizard().moveDown();
+            game.getWizard().setDy(speed);
         }
         if (key == KeyEvent.VK_D) {
-            game.getWizard().moveRight();
+            game.getWizard().setDx(speed);
         }
         if (key == KeyEvent.VK_K) {
             game.basicAttack();
@@ -284,14 +286,36 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     }
 
     // A key adapter that records current key event
-    private class KeyInput extends KeyAdapter {
+    private class KeyInput implements KeyListener {
 
         private KeyInput() {
         }
 
         @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
         public void keyPressed(KeyEvent e) {
             keyInput(e);
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            int key = e.getKeyCode();
+
+            if (key == KeyEvent.VK_W) {
+                game.getWizard().setDy(0);
+            }
+            if (key == KeyEvent.VK_A) {
+                game.getWizard().setDx(0);
+            }
+            if (key == KeyEvent.VK_S) {
+                game.getWizard().setDy(0);
+            }
+            if (key == KeyEvent.VK_D) {
+                game.getWizard().setDx(0);
+            }
         }
     }
 

@@ -12,7 +12,7 @@ import java.awt.*;
 // Represents a wizard that the player controls through key inputs
 public class Wizard extends Entity implements Writable {
 
-    public static final int SPEED = 10;
+    public static final int SPEED = 4;
 
     private int health;
     private int speed;
@@ -26,12 +26,13 @@ public class Wizard extends Entity implements Writable {
     public Wizard(int posX, int posY) {
         super(posX, posY);
         speed = SPEED;
+        lastDirection = Direction.RIGHT;
         dy = 0;
-        dx = speed;
+        dx = 0;
         health = 100;
         time = 5;
         moving = false;
-        hitbox = new Rectangle(posX, posY, Entity.LIVING_X, Entity.LIVING_Y);
+        hitbox = new Rectangle(posX, posY, 35, 75);
     }
 
     // FIELD METHODS:
@@ -57,23 +58,15 @@ public class Wizard extends Entity implements Writable {
         return this.time;
     }
 
+    // MODIFIES: this
     // EFFECTS: returns the moving state of the wizard (true if moving, false otherwise)
     public boolean isMoving() {
+        if (dx != 0 || dy != 0) {
+            moving = true;
+        } else {
+            moving = false;
+        }
         return this.moving;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: sets the x position
-    public void setPosX(int x) {
-        posX = x;
-        hitbox.setLocation(x, posY);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: sets the x position
-    public void setPosY(int y) {
-        posY = y;
-        hitbox.setLocation(posX, y);
     }
 
     // MODIFIES: this
@@ -91,6 +84,34 @@ public class Wizard extends Entity implements Writable {
     // MODIFICATION METHODS:
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // MODIFIES: this
+    // EFFECTS: Moves the wizard based on the dy dx value
+    public void move() {
+        isMoving();
+        posX += dx;
+        posY += dy;
+        hitbox.setLocation(posX, posY);
+        setDirection();
+        this.handleBoundary();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: changes last direction according to wizard dx dy value
+    public void setDirection() {
+        if (dx > 0) {
+            lastDirection = Direction.RIGHT;
+        }
+        if (dx < 0) {
+            lastDirection = Direction.LEFT;
+        }
+        if (dy > 0) {
+            lastDirection = Direction.DOWN;
+        }
+        if (dy < 0) {
+            lastDirection = Direction.UP;
+        }
+    }
+
     // EFFECTS: Moves the wizard right by its speed
     // MODIFIES: this
     public void moveRight() {
@@ -98,6 +119,7 @@ public class Wizard extends Entity implements Writable {
         this.posX += dx;
         hitbox.setLocation(posX, posY);
         this.handleBoundary();
+        lastDirection = Direction.RIGHT;
     }
 
     // EFFECTS: Moves the wizard right by its speed
@@ -107,6 +129,7 @@ public class Wizard extends Entity implements Writable {
         this.posX += dx;
         hitbox.setLocation(posX, posY);
         this.handleBoundary();
+        lastDirection = Direction.LEFT;
     }
 
     // EFFECTS: Moves the wizard up by its speed
@@ -116,6 +139,7 @@ public class Wizard extends Entity implements Writable {
         this.posY += dy;
         hitbox.setLocation(posX, posY);
         this.handleBoundary();
+        lastDirection = Direction.UP;
     }
 
     // EFFECTS: Moves the wizard down by its speed
@@ -125,6 +149,7 @@ public class Wizard extends Entity implements Writable {
         this.posY += dy;
         hitbox.setLocation(posX, posY);
         this.handleBoundary();
+        lastDirection = Direction.DOWN;
     }
 
     // EFFECTS: sets the x and y directions of wizard
@@ -152,20 +177,6 @@ public class Wizard extends Entity implements Writable {
     // MODIFIES: this
     public void setMoving(boolean b) {
         this.moving = b;
-    }
-
-    // EFFECTS: keeps wizard within the boundary of the game
-    // MODIFIES: this
-    public void handleBoundary() {
-        if (posX < 0) {
-            posX = 0;
-        } else if (posX > WizardsVsZombies.WIDTH) {
-            posX = WizardsVsZombies.WIDTH;
-        } else if (posY > WizardsVsZombies.HEIGHT) {
-            posY = WizardsVsZombies.HEIGHT;
-        } else if (posY < 0) {
-            posY = 0;
-        }
     }
 
     // EFFECTS: converts wizard fields into JSON syntax

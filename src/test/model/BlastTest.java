@@ -20,10 +20,10 @@ public class BlastTest {
     @Test
     public void moveTestRight() {
         blastRight = new Blast(startWidth, startHeight, true, true);
-        blastRight.moveBlast();
+        blastRight.move();
         assertEquals(startWidth + speed, blastRight.getPosX());
         assertEquals(startHeight, blastRight.getPosY());
-        blastRight.moveBlast();
+        blastRight.move();
         assertEquals(startWidth + speed + speed, blastRight.getPosX());
         assertEquals(startHeight, blastRight.getPosY());
     }
@@ -31,10 +31,10 @@ public class BlastTest {
     @Test
     public void moveTestLeft() {
         blastLeft = new Blast(startWidth, startHeight, true, false);
-        blastLeft.moveBlast();
+        blastLeft.move();
         assertEquals(startWidth - speed, blastLeft.getPosX());
         assertEquals(startHeight, blastLeft.getPosY());
-        blastLeft.moveBlast();
+        blastLeft.move();
         assertEquals(startWidth - speed - speed, blastLeft.getPosX());
         assertEquals(startHeight, blastLeft.getPosY());
     }
@@ -42,10 +42,10 @@ public class BlastTest {
     @Test
     public void moveTestUp() {
         blastUp = new Blast(startWidth, startHeight, false, false);
-        blastUp.moveBlast();
+        blastUp.move();
         assertEquals(startHeight - speed, blastUp.getPosY());
         assertEquals(startWidth, blastUp.getPosX());
-        blastUp.moveBlast();
+        blastUp.move();
         assertEquals(startHeight - speed - speed, blastUp.getPosY());
         assertEquals(startWidth, blastUp.getPosX());
     }
@@ -53,10 +53,10 @@ public class BlastTest {
     @Test
     public void moveTestDown() {
         blastDown = new Blast(startWidth, startHeight, false, true);
-        blastDown.moveBlast();
+        blastDown.move();
         assertEquals(startHeight + speed, blastDown.getPosY());
         assertEquals(startWidth, blastDown.getPosX());
-        blastDown.moveBlast();
+        blastDown.move();
         assertEquals(startHeight + speed + speed, blastDown.getPosY());
         assertEquals(startWidth, blastDown.getPosX());
     }

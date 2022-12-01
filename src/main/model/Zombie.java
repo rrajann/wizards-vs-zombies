@@ -17,6 +17,9 @@ public class Zombie extends Entity implements Writable {
         super(posX, posY);
     }
 
+    @Override
+    public void move() {}
+
     // EFFECTS: moves the zombie closer to the specified x and y coordinates of argument
     // MODIFIES: this
     // REQUIRES: x and y must both be within the game boundaries (ie: within 0 and game WIDTH/HEIGHT)
@@ -30,12 +33,14 @@ public class Zombie extends Entity implements Writable {
     // REQUIRES: x must both be within the game boundaries (ie: within 0 and game WIDTH/HEIGHT)
     public void approachX(int x) {
         if (posX >= x) {
+            lastDirection = Direction.RIGHT;
             if (posX - x < ZOMBIE_SPEED) {
                 posX = x;
             } else {
                 posX -= ZOMBIE_SPEED;
             }
         } else {
+            lastDirection = Direction.LEFT;
             if (x - posX < ZOMBIE_SPEED) {
                 posX = x;
             } else {
@@ -50,12 +55,14 @@ public class Zombie extends Entity implements Writable {
     // REQUIRES: y must both be within the game boundaries (ie: within 0 and game WIDTH/HEIGHT)
     public void approachY(int y) {
         if (posY >= y) {
+            lastDirection = Direction.UP;
             if (posY - y < ZOMBIE_SPEED) {
                 posY = y;
             } else {
                 posY -= ZOMBIE_SPEED;
             }
         } else {
+            lastDirection = Direction.DOWN;
             if (y - posY < ZOMBIE_SPEED) {
                 posY = y;
             } else {

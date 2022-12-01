@@ -1,0 +1,39 @@
+{
+  "Blasts": [
+    {
+      "horizontal": true,
+      "x": 20,
+      "y": 5,
+      "direction": false
+    },
+    {
+      "horizontal": false,
+      "x": 50,
+      "y": 20,
+      "direction": false
+    }
+  ],
+  "Zombies": [
+    {
+      "x": 50,
+      "y": 25
+    },
+    {
+      "x": 32,
+      "y": 30
+    },
+    {
+      "x": 0,
+      "y": 0
+    }
+  ],
+  "Wizard": {
+    "dx": 0,
+    "dy": 5,
+    "x": 50,
+    "y": 20,
+    "health": 56,
+    "time": 5,
+    "moving": false
+  }
+}

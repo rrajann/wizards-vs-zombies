@@ -1,10 +1,14 @@
 package ui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.URL;
+import java.nio.Buffer;
 
 // a panel for the menu, the initial and intermediate panel
 public class MenuPanel extends JPanel {
@@ -16,24 +20,44 @@ public class MenuPanel extends JPanel {
     private JButton loadGame;
     private JButton quit;
     private WizardsVsZombies game;
-    private ImageIcon picture;
+    private BufferedImage picture;
     private JLabel actualPicture;
+    private Image scaledImage;
 
     // EFFECTS: instantiates a new menu panel
     public MenuPanel(WizardsVsZombies game) {
         Dimension panel = new Dimension(WizardsVsZombies.WIDTH, WizardsVsZombies.HEIGHT);
+        setLayout(new GridBagLayout());
         setPreferredSize(panel);
         setBackground(Color.black);
         startGame();
         loadGame();
         quitGame();
+        title();
         setVisible(true);
-        picture = new ImageIcon("data/tobs.jpg");
-        actualPicture = new JLabel();
-        actualPicture.setIcon(picture);
-        add(actualPicture);
 
         this.game = game;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds images to menu screen
+    public void title() {
+        File file = new File("data/title.png");
+
+        try {
+            picture = ImageIO.read(file);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+
+        scaledImage = picture.getScaledInstance(WIDTH, HEIGHT / 10, Image.SCALE_SMOOTH);
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        g.drawImage(scaledImage, 0, HEIGHT / 10, this);
     }
 
     // MODIFIES: this, WizardsVsZombies
