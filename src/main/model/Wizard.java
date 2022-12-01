@@ -1,11 +1,7 @@
 package model;
 
-import netscape.javascript.JSException;
-import netscape.javascript.JSObject;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
-import ui.WizardsVsZombies;
 
 import java.awt.*;
 
@@ -91,13 +87,13 @@ public class Wizard extends Entity implements Writable {
         posX += dx;
         posY += dy;
         hitbox.setLocation(posX, posY);
-        setDirection();
+        setD();
         this.handleBoundary();
     }
 
     // MODIFIES: this
     // EFFECTS: changes last direction according to wizard dx dy value
-    public void setDirection() {
+    public void setD() {
         if (dx > 0) {
             lastDirection = Direction.RIGHT;
         }
