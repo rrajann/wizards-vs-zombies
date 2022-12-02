@@ -44,16 +44,16 @@ many interactive components.
 
 #### Sample:
 
-    Wed Nov 30 18:33:41 PST 2022
+    Fri Dec 02 12:18:48 PST 2022
     Wizard threw a blast! Number of blasts: 1
-    Wed Nov 30 18:33:43 PST 2022
+    Fri Dec 02 12:18:49 PST 2022
+    Removed blast that went out of bounds. Number of blasts: 0
+    Fri Dec 02 12:18:50 PST 2022
+    Wizard threw a blast! Number of blasts: 1
+    Fri Dec 02 12:18:51 PST 2022
     Wizard threw a blast! Number of blasts: 2
-    Wed Nov 30 18:33:44 PST 2022
-    Wizard threw a blast! Number of blasts: 3
-    Wed Nov 30 18:33:45 PST 2022
-    Blast absorbed by zombie! Number of blasts: 2
-    Wed Nov 30 18:33:46 PST 2022
-    Wizard threw a blast! Number of blasts: 1
+    Fri Dec 02 12:18:51 PST 2022
+    Blast absorbed by zombie! Number of blasts: 1
 
 ### Task 4
 
