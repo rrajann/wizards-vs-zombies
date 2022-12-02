@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -20,22 +21,15 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     public static final int INTERVAL = 35; // change back to 17 after Phase 2 demo
     public static final String FILE = "./data/savedStated.json";
 
-    private List<Blast> blasts;
-    private List<Zombie> zombies;
-    private Wizard wizard;
     private GameLogic game;
     private Random rand;
     private boolean play;
-    private boolean paused;
-    private Scanner input;
     private JsonWriter saver;
     private JsonReader loader;
     private boolean load;
     private GamePanel gamePanel;
     private MenuPanel menuPanel;
     private Screen screen;
-    private List<GameLogic> gameStates;
-    private WizardsVsZombies previousTick;
     private int count;
 
     // EFFECTS: creates a new game of Wizards vs Zombies
@@ -55,7 +49,6 @@ public class WizardsVsZombies extends JFrame implements Runnable {
         game = new GameLogic();
         play = true;
         load = false;
-        previousTick = this;
         count = 0;
 
         saver = new JsonWriter(FILE);
@@ -158,7 +151,6 @@ public class WizardsVsZombies extends JFrame implements Runnable {
                 }
 
             }
-            System.out.println(screen);
 
             try {
                 Thread.sleep(INTERVAL);
@@ -198,35 +190,16 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     // MODIFIES: this
     public void update() {
 
-
-        if (game.wizardDamaged()) {
-            System.out.println("Wizard got damaged!");
-        }
-        if (game.deleteZombies()) {
-            System.out.println("Zombie hit and down!");
-        }
-
         Wizard wizard = game.getWizard();
 
+        game.wizardDamaged();
+        game.deleteZombies();
         game.nextZombies();
         game.nextBlasts();
         wizard.move();
+        game.blastBoundary();
     }
 
-    // MODIFIES: this
-    // EFFECTS: removes blasts if they get to the boundary
-    public void blastBoundary() {
-
-        List<Blast> blasts = game.getBlasts();
-
-        for (Blast b : blasts) {
-            if (!(0 < b.getPosX()) || !(b.getPosX() < WIDTH)) {
-                blasts.remove(b);
-            } else if (!(0 < b.getPosY()) || !(b.getPosY() < HEIGHT)) {
-                blasts.remove(b);
-            }
-        }
-    }
 
     // EFFECTS: prints the event log
     public void printLog(EventLog el) {

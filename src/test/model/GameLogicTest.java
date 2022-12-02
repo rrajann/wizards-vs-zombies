@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GameLogicTest {
 
     private GameLogic game;
+    private static final int WIDTH = WizardsVsZombies.WIDTH;
+    private static final int HEIGHT = WizardsVsZombies.HEIGHT;
     private static final int X = WizardsVsZombies.WIDTH / 2;
     private static final int Y = WizardsVsZombies.HEIGHT / 2;
     private static final int X_SIZE = Entity.LIVING_X;
@@ -297,17 +299,49 @@ public class GameLogicTest {
     }
 
     @Test
+    public void blastBoundaryTestX() {
+        List<Blast> blasts = game.getBlasts();
+        blasts.add(new Blast(1, Y, true, true));
+
+        game.blastBoundary();
+        assertEquals(2, blasts.size());
+        b.setPosX(WIDTH - 1);
+        game.blastBoundary();
+        assertEquals(2, blasts.size());
+        b.setPosX(WIDTH);
+        blasts.get(1).setPosX(0);
+        game.blastBoundary();
+        assertEquals(0, blasts.size());
+    }
+
+    @Test
+    public void blastBoundaryTestY() {
+        List<Blast> blasts = game.getBlasts();
+        blasts.add(new Blast(X, 1, true, true));
+
+        game.blastBoundary();
+        assertEquals(2, blasts.size());
+        b.setPosY(HEIGHT - 1);
+        game.blastBoundary();
+        assertEquals(2, blasts.size());
+        b.setPosY(HEIGHT);
+        blasts.get(1).setPosY(0);
+        game.blastBoundary();
+        assertEquals(0, blasts.size());
+    }
+
+    @Test
     public void wizardDamaged() {
         blasts.remove(b);
         assertTrue(game.wizardDamaged());
         assertEquals(100 - damage, wizard.getHealth());
-        wizard.setPosX(X + 4);                                             // wizard moves out of harms way
+        wizard.setPosX(X + 5);                                             // wizard moves out of harms way
         assertFalse(game.wizardDamaged());
         assertEquals(100 - damage, wizard.getHealth());
         wizard.setPosX(X + 3);
         assertTrue(game.wizardDamaged());
         assertEquals(100 - damage * 2, wizard.getHealth());
-        wizard.setPosY(Y + 10);
+        wizard.setPosY(Y + 26);
         assertFalse(game.wizardDamaged());
         wizard.setPosY(Y + 9);
         assertTrue(game.wizardDamaged());
@@ -321,7 +355,7 @@ public class GameLogicTest {
         game.addZombie(zSecond);
         assertTrue(game.wizardDamaged());
         assertEquals(100 - (2 * damage), wizard.getHealth());
-        wizard.setPosX(X + 4);                                             // wizard moves out of harms way
+        wizard.setPosX(X + 5);                                             // wizard moves out of harms way
         assertFalse(game.wizardDamaged());
         assertEquals(100 - (2 * damage), wizard.getHealth());
         Zombie zombie = zombies.get(0);

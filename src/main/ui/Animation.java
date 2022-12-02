@@ -119,7 +119,6 @@ public class Animation extends GamePanel {
     private void drawWizard(Graphics g) {
         Wizard wizard = game.getGameLogic().getWizard();
         int point = count % 4;
-        System.out.println(game.getCount());
 
         // try to make animation slower
 

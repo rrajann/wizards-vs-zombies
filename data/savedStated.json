@@ -1,66 +1,14 @@
 {
-  "Blasts": [
-    {
-      "horizontal": false,
-      "x": 500,
-      "y": -25524,
-      "direction": false
-    },
-    {
-      "horizontal": true,
-      "x": 25472,
-      "y": 436,
-      "direction": true
-    },
-    {
-      "horizontal": true,
-      "x": 23436,
-      "y": 480,
-      "direction": true
-    },
-    {
-      "horizontal": true,
-      "x": -21284,
-      "y": 572,
-      "direction": false
-    },
-    {
-      "horizontal": true,
-      "x": -20148,
-      "y": 636,
-      "direction": false
-    },
-    {
-      "horizontal": true,
-      "x": -19688,
-      "y": 636,
-      "direction": false
-    },
-    {
-      "horizontal": true,
-      "x": -19228,
-      "y": 636,
-      "direction": false
-    },
-    {
-      "horizontal": false,
-      "x": 572,
-      "y": 17768,
-      "direction": true
-    },
-    {
-      "horizontal": true,
-      "x": 8408,
-      "y": 620,
-      "direction": true
-    }
-  ],
-  "Zombies": [],
+  "Blasts": [],
+  "Zombies": [{
+    "x": 132,
+    "y": 959
+  }],
   "Wizard": {
     "dx": 0,
     "dy": 0,
-    "x": 332,
-    "y": 512,
+    "x": 476,
+    "y": 416,
     "health": 100,
     "time": 5,
     "moving": false

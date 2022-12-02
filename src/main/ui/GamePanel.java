@@ -17,21 +17,12 @@ import java.util.List;
 // represents the panel that draws each frame of the current game
 public class GamePanel extends JPanel {
 
-    private WizardsVsZombies game;
+    protected WizardsVsZombies game;
     private JLabel background;
     private final int livingX = Entity.LIVING_X;
     private final int livingY = Entity.LIVING_Y;
     private final int blastX = Entity.BLAST_X_SIZE;
     private final int blastY = Entity.BLAST_Y_SIZE;
-
-    // IMAGES (test):
-    private Image movingImage;
-    private Image idleImage;
-    private BufferedImage moving;
-    private BufferedImage idle;
-    private List<Image> images = new ArrayList<>();
-    private int count;
-    Animation wizard;
 
     private JButton shoot;
 
@@ -45,7 +36,6 @@ public class GamePanel extends JPanel {
         instructions.setForeground(Color.white);
         instructions.setBounds(0, 0, 10, 10);
         shootBlast();
-
 
         this.game = game;
         setVisible(true);
@@ -77,7 +67,7 @@ public class GamePanel extends JPanel {
     // MODIFIES: this
     // EFFECTS: helper method for paintComponent (draws game state)
     private void drawGame(Graphics g) {
-        wizard = new Animation(g, game);
+        new Animation(g, game);
         drawBlasts(g);
         drawZombies(g);
         drawHealth(g);
@@ -88,7 +78,7 @@ public class GamePanel extends JPanel {
     private void drawHealth(Graphics g) {
         Wizard wizard = game.getGameLogic().getWizard();
 
-        g.drawString(toString(), wizard.getPosX() - (livingX * 2), wizard.getPosY() + livingY);
+        g.drawString(toString(), wizard.getPosX() - (livingX * 2), wizard.getPosY() + 50);
     }
 
     // EFFECTS: toString override to show the wizard's health

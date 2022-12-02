@@ -15,8 +15,6 @@ public class GameLogic implements Writable {
     private List<Zombie> zombies;
     private Wizard wizard;
 
-
-
     // EFFECT: creates a collection of entities, including one wizard and a list of wizards and blasts
     public GameLogic() {
         wizard = new Wizard(WizardsVsZombies.WIDTH / 2, WizardsVsZombies.HEIGHT / 2);
@@ -123,6 +121,26 @@ public class GameLogic implements Writable {
             return true;
         }
         return false;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: returns the list of blasts to move due to them having gone beyond the boundary of the game
+    public void blastBoundary() {
+
+        List<Blast> removedBlasts = new ArrayList<>();
+
+        for (Blast b : blasts) {
+            if (!(0 < b.getPosX()) || !(b.getPosX() < WizardsVsZombies.WIDTH)) {
+                removedBlasts.add(b);
+            } else if (!(0 < b.getPosY()) || !(b.getPosY() < WizardsVsZombies.HEIGHT)) {
+                removedBlasts.add(b);
+            }
+        }
+
+        if (blasts.removeAll(removedBlasts)) {
+            EventLog.getInstance().logEvent(
+                    new Event("Removed blast that went out of bounds. Number of blasts: " + blasts.size()));
+        }
     }
 
     // EFFECT: adds a blast to the list of blasts depending on the wizards position

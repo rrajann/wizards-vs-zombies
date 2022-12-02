@@ -38,9 +38,12 @@ many interactive components.
 - While in the main menu, you can choose to choose a new game or load the previously saved game by pressing the 
   corresponding buttons
 
-## Phase 4: Task 2
+## Phase 4
 
-### Sample:
+### Task 2
+
+#### Sample:
+
     Wed Nov 30 18:33:41 PST 2022
     Wizard threw a blast! Number of blasts: 1
     Wed Nov 30 18:33:43 PST 2022
@@ -52,5 +55,11 @@ many interactive components.
     Wed Nov 30 18:33:46 PST 2022
     Wizard threw a blast! Number of blasts: 1
 
-GameLogic class depends on the EventLog class, as it calls EventLog.getInstance
-, and directly changes the single instance of EventLog by adding an event.
+### Task 4
+
+- Implement a Singleton design pattern for wizard so that there can only be one instance of wizard
+- Some of my methods, such as run() or deleteZombies() are responsible for too many things
+  - It would be improved if they were composed of multiple helper methods
+- Entity class and its effect on its subclasses could be better implemented
+  - Some methods of the class, such as handleBoundary(), only applies for wizards
+  - Blast fields `direction` and `horizontal` could be removed after the addition of the enum `DIRECTION`

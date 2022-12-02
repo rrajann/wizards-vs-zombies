@@ -8,7 +8,7 @@ import java.awt.*;
 // Represents a single blast that can be thrown by the wizard
 public class Blast extends Entity implements Writable {
 
-    public static final int BLAST_SPEED = 20;
+    public static final int BLAST_SPEED = 15;
 
     private boolean horizontal;
     private boolean direction;

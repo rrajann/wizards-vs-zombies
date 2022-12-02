@@ -7,9 +7,9 @@ import java.awt.*;
 // interface for any dynamic (moving) class in the game
 public abstract class Entity {
 
-    public static final int LIVING_X = 7;
-    public static final int LIVING_Y = 20;
-    public static final int BLAST_X_SIZE = 5;
+    public static final int LIVING_X = 10;
+    public static final int LIVING_Y = 25;
+    public static final int BLAST_X_SIZE = 10;
     public static final int BLAST_Y_SIZE = 5;
 
     protected int posX;
