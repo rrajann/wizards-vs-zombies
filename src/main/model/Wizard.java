@@ -2,6 +2,7 @@ package model;
 
 import org.json.JSONObject;
 import persistence.Writable;
+import ui.WizardsVsZombies;
 
 import java.awt.*;
 
@@ -9,26 +10,30 @@ import java.awt.*;
 public class Wizard extends Entity implements Writable {
 
     public static final int SPEED = 4;
+    private static Wizard wizard = new Wizard(WizardsVsZombies.WIDTH / 2, WizardsVsZombies.HEIGHT / 2);
 
     private int health;
-    private int speed;
     private int dy;
     private int dx;
+    private int mana;
     private int time;
-    private boolean moving;
 
     // REQUIRES: one of dx and dy has to be 0
     // EFFECTS: Constructs a wizard with 100 health, facing right and not moving
-    public Wizard(int posX, int posY) {
+    private Wizard(int posX, int posY) {
         super(posX, posY);
-        speed = SPEED;
         lastDirection = Direction.RIGHT;
         dy = 0;
         dx = 0;
         health = 100;
-        time = 5;
-        moving = false;
+        time = 10;
+        mana = 5;
         hitbox = new Rectangle(posX, posY, 35, 75);
+    }
+
+    // EFFECTS: accesses the singleton wizard
+    public static Wizard getInstance() {
+        return wizard;
     }
 
     // FIELD METHODS:
@@ -50,19 +55,8 @@ public class Wizard extends Entity implements Writable {
     }
 
     // EFFECTS: returns the time until the Wizard can use its super attack
-    public int getTime() {
-        return this.time;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: returns the moving state of the wizard (true if moving, false otherwise)
-    public boolean isMoving() {
-        if (dx != 0 || dy != 0) {
-            moving = true;
-        } else {
-            moving = false;
-        }
-        return this.moving;
+    public int getMana() {
+        return this.mana;
     }
 
     // MODIFIES: this
@@ -151,8 +145,8 @@ public class Wizard extends Entity implements Writable {
     // REQUIRES: magnitude of parameters must be -1, 0, or 1
     // MODIFIES: this
     public void setDirection(int x, int y) {
-        this.dx = this.speed * x;
-        this.dy = this.speed * y;
+        this.dx = SPEED * x;
+        this.dy = SPEED * y;
     }
 
     // EFFECTS: changes the health of the wizard to the specified argument
@@ -164,8 +158,8 @@ public class Wizard extends Entity implements Writable {
 
     // EFFECTS: changes the time of the wizard to the specified argument
     // MODIFIES: this
-    public void setTime(int t) {
-        this.time = t;
+    public void setMana(int t) {
+        this.mana = t;
     }
 
 
@@ -178,8 +172,7 @@ public class Wizard extends Entity implements Writable {
         wizardAttributes.put("dx", dx);
         wizardAttributes.put("dy", dy);
         wizardAttributes.put("health", health);
-        wizardAttributes.put("time", time);
-        wizardAttributes.put("moving", moving);
+        wizardAttributes.put("mana", mana);
         return wizardAttributes;
     }
 }

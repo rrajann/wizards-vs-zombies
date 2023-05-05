@@ -1,6 +1,7 @@
 package persistence;
 
 import model.Blast;
+import model.Entity;
 import model.GameLogic;
 import model.Zombie;
 import org.json.JSONArray;
@@ -81,10 +82,9 @@ public class JsonReader {
             JSONObject curr = jsonArray.getJSONObject(i);
             int x = curr.getInt("x");
             int y = curr.getInt("y");
-            boolean horizontal = curr.getBoolean("horizontal");
-            boolean direction = curr.getBoolean("direction");
+            String direction = curr.getString("direction");
 
-            Blast blast = new Blast(x, y, horizontal, direction);
+            Blast blast = new Blast(x, y, Entity.toDirection(direction));
 
             blasts.add(blast);
         }

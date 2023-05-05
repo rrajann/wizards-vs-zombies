@@ -4,8 +4,10 @@ import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +18,8 @@ import java.util.Scanner;
 public class WizardsVsZombies extends JFrame implements Runnable {
 
     // Game board:
-    public static final int HEIGHT = 1000;
-    public static final int WIDTH = 1000;
+    public static final int HEIGHT = 750;
+    public static final int WIDTH = 750;
     public static final int INTERVAL = 35; // change back to 17 after Phase 2 demo
     public static final String FILE = "./data/savedStated.json";
 
@@ -36,6 +38,7 @@ public class WizardsVsZombies extends JFrame implements Runnable {
     public WizardsVsZombies() {
         super("Wizards Vs Zombies");
         setSize(WIDTH, HEIGHT);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -45,10 +48,9 @@ public class WizardsVsZombies extends JFrame implements Runnable {
                 dispose();
             }
         });
-
         game = new GameLogic();
         play = true;
-        load = false;
+        load = true;
         count = 0;
 
         saver = new JsonWriter(FILE);

@@ -29,7 +29,7 @@ public class GameLogicTest {
     public void before() {
         game = new GameLogic();
         z = new Zombie(X, Y);
-        b = new Blast(X, Y, true, true);
+        b = new Blast(X, Y, Entity.Direction.RIGHT);
         game.addZombie(z);
         game.addBlast(b);
         zombies = game.getZombies();
@@ -66,7 +66,7 @@ public class GameLogicTest {
     @Test
     public void addBlastMultipleTest() {
         assertEquals(1, blasts.size());
-        Blast blastUp = new Blast(X, Y, false, true);
+        Blast blastUp = new Blast(X, Y, Entity.Direction.LEFT);
         game.addBlast(blastUp);
         assertEquals(2, blasts.size());
         assertTrue(blasts.contains(b));
@@ -127,7 +127,7 @@ public class GameLogicTest {
     public void deleteZombiesTestMultipleBlasts() {
         Zombie zSecond = new Zombie(X / 2, Y / 2);
         Zombie zThird = new Zombie(0, 0);
-        Blast blastZero = new Blast(0, 0, true, true);
+        Blast blastZero = new Blast(0, 0, Entity.Direction.RIGHT);
         game.addBlast(blastZero);
         game.addZombie(zSecond);
         game.addZombie(zThird);
@@ -161,8 +161,8 @@ public class GameLogicTest {
 
     @Test
     public void deleteBlastsTestMultiple() {
-        Blast blastDown = new Blast(0, 0, false, true);
-        Blast blastLeft = new Blast(X / 2, Y / 2, true, false);
+        Blast blastDown = new Blast(0, 0, Entity.Direction.LEFT);
+        Blast blastLeft = new Blast(X / 2, Y / 2, Entity.Direction.UP);
         game.addBlast(blastDown);
         game.addBlast(blastLeft);
         assertTrue(game.deleteZombies());
@@ -175,8 +175,8 @@ public class GameLogicTest {
     @Test
     public void deleteBlastsTestNoDeletion() {
         blasts.remove(b);
-        Blast blastDown = new Blast(0, 0, false, true);
-        Blast blastLeft = new Blast(X / 2, Y / 2, true, false);
+        Blast blastDown = new Blast(0, 0, Entity.Direction.DOWN);
+        Blast blastLeft = new Blast(X / 2, Y / 2, Entity.Direction.LEFT);
         game.addBlast(blastDown);
         game.addBlast(blastLeft);
         assertFalse(game.deleteZombies());
@@ -187,8 +187,8 @@ public class GameLogicTest {
 
     @Test
     public void deleteBlastsTestMultipleZombies() {
-        Blast blastDown = new Blast(0, 0, false, true);
-        Blast blastLeft = new Blast(X / 2, Y / 2, true, false);
+        Blast blastDown = new Blast(0, 0, Entity.Direction.DOWN);
+        Blast blastLeft = new Blast(X / 2, Y / 2, Entity.Direction.LEFT);
         Zombie zombieZero = new Zombie(0, 0);
         game.addBlast(blastDown);
         game.addBlast(blastLeft);
@@ -202,8 +202,8 @@ public class GameLogicTest {
 
     @Test
     public void deleteZombiesEverythingKilled() {
-        Blast blastDown = new Blast(0, 0, false, true);
-        Blast blastLeft = new Blast(X / 2, Y / 2, true, false);
+        Blast blastDown = new Blast(0, 0, Entity.Direction.DOWN);
+        Blast blastLeft = new Blast(X / 2, Y / 2, Entity.Direction.LEFT);
         Zombie zombieSecond = new Zombie(0, 0);
         Zombie zombieThird = new Zombie(X / 2, Y / 2);
         game.addBlast(blastDown);
@@ -217,8 +217,8 @@ public class GameLogicTest {
 
     @Test
     public void deleteZombiesEverythingKilledDuplicated() {
-        Blast blastDown = new Blast(0, 0, false, true);
-        Blast blastLeft = new Blast(X / 2, Y / 2, true, false);
+        Blast blastDown = new Blast(0, 0, Entity.Direction.DOWN);
+        Blast blastLeft = new Blast(X / 2, Y / 2, Entity.Direction.LEFT);
         Zombie zombieSecond = new Zombie(0, 0);
         Zombie zombieThird = new Zombie(X / 2, Y / 2);
         game.addBlast(blastDown);
@@ -239,16 +239,12 @@ public class GameLogicTest {
         game.basicAttack();
         assertEquals(1, blasts.size());
         Blast blastRight = blasts.get(0);
-        assertTrue(blastRight.isHorizontal());
-        assertTrue(blastRight.isDirection());
         assertEquals(X, blastRight.getPosX());
         assertEquals(Y, blastRight.getPosY());
         wizard.moveDown();
         game.basicAttack();
         Blast blastDown = blasts.get(1);
         assertEquals(2, blasts.size());
-        assertFalse(blastDown.isHorizontal());
-        assertTrue(blastDown.isDirection());
         assertEquals(X, blastDown.getPosX());
         assertEquals(Y + Wizard.SPEED, blastDown.getPosY());
     }
@@ -263,16 +259,12 @@ public class GameLogicTest {
         game.basicAttack();
         Blast blastLeft = blasts.get(2);
         assertEquals(3, blasts.size());
-        assertTrue(blastLeft.isHorizontal());
-        assertFalse(blastLeft.isDirection());
         assertEquals(X - Wizard.SPEED, blastLeft.getPosX());
         assertEquals(Y + Wizard.SPEED, blastLeft.getPosY());
         wizard.moveUp();
         game.basicAttack();
         Blast blastUp = blasts.get(3);
         assertEquals(4, blasts.size());
-        assertFalse(blastUp.isHorizontal());
-        assertFalse(blastUp.isDirection());
         assertEquals(X - Wizard.SPEED, blastUp.getPosX());
         assertEquals(Y, blastUp.getPosY());
     }
@@ -290,18 +282,14 @@ public class GameLogicTest {
         assertEquals(2, blasts.size());
         assertEquals(X, blastFirst.getPosX());
         assertEquals(Y, blastFirst.getPosY());
-        assertTrue(blastFirst.isDirection());
-        assertTrue(blastFirst.isDirection());
         assertEquals(X + Wizard.SPEED, blastSecond.getPosX());
         assertEquals(Y, blastFirst.getPosY());
-        assertTrue(blastSecond.isDirection());
-        assertTrue(blastSecond.isDirection());
     }
 
     @Test
     public void blastBoundaryTestX() {
         List<Blast> blasts = game.getBlasts();
-        blasts.add(new Blast(1, Y, true, true));
+        blasts.add(new Blast(1, Y, Entity.Direction.RIGHT));
 
         game.blastBoundary();
         assertEquals(2, blasts.size());
@@ -317,7 +305,7 @@ public class GameLogicTest {
     @Test
     public void blastBoundaryTestY() {
         List<Blast> blasts = game.getBlasts();
-        blasts.add(new Blast(X, 1, true, true));
+        blasts.add(new Blast(X, 1, Entity.Direction.RIGHT));
 
         game.blastBoundary();
         assertEquals(2, blasts.size());
@@ -396,9 +384,9 @@ public class GameLogicTest {
     @Test
     public void nextBlastsTestMultiple() {
         game.deleteZombies();
-        Blast bSecond = new Blast (0, 0, false, true);
-        Blast bThird = new Blast (X * 2, Y * 2, true, false);
-        Blast bFourth = new Blast (X, Y, false, false);
+        Blast bSecond = new Blast (0, 0, Entity.Direction.DOWN);
+        Blast bThird = new Blast (X * 2, Y * 2, Entity.Direction.LEFT);
+            Blast bFourth = new Blast (X, Y, Entity.Direction.UP);
         game.addBlast(bSecond);
         game.addBlast(bThird);
         game.addBlast(bFourth);
@@ -416,8 +404,8 @@ public class GameLogicTest {
         wizard.setHealth(2);
         wizard.setPosY(10);
         wizard.setPosX(10);
-        Blast blastDown = new Blast(0, 0, false, true);
-        Blast blastLeft = new Blast(X / 2, Y / 2, true, false);
+        Blast blastDown = new Blast(0, 0, Entity.Direction.DOWN);
+        Blast blastLeft = new Blast(X / 2, Y / 2, Entity.Direction.LEFT);
         Zombie zombieSecond = new Zombie(0, 0);
         Zombie zombieThird = new Zombie(X / 2, Y / 2);
         game.addBlast(blastDown);

@@ -1,9 +1,6 @@
 package persistence;
 
-import model.Blast;
-import model.GameLogic;
-import model.Wizard;
-import model.Zombie;
+import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,8 +18,8 @@ public class JsonWriterTest {
         randomGame = new GameLogic();
         randomGame.setWizard(50, 20, 0, 5, 56, 5, false);
 
-        Blast blast1 = new Blast(20, 5, true, false);
-        Blast blast2 = new Blast(50, 20, false, false);
+        Blast blast1 = new Blast(20, 5, Entity.Direction.DOWN);
+        Blast blast2 = new Blast(50, 20, Entity.Direction.UP);
 
         Zombie zombie1 = new Zombie(50, 25);
         Zombie zombie2 = new Zombie(32, 30);

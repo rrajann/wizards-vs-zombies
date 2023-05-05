@@ -22,6 +22,22 @@ public abstract class Entity {
         UP, DOWN, LEFT, RIGHT
     }
 
+    // REQUIRES: argument must be one of the Direction constants
+    // EFFECTS: converts string to Direction
+    public static Direction toDirection(String direction) {
+        switch (direction) {
+            case "UP":
+                return Direction.UP;
+            case "DOWN":
+                return Direction.DOWN;
+            case "LEFT":
+                return Direction.LEFT;
+            case "RIGHT":
+                return Direction.RIGHT;
+        }
+        return null;
+    }
+
     // EFFECT: creates super class describing any moving object in the game
     public Entity(int posX, int posY) {
         this.posX = posX;
@@ -44,6 +60,12 @@ public abstract class Entity {
     public void setPosY(int y) {
         posY = y;
         hitbox.setLocation(posX, y);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets the direction of the entity
+    public void setLastDirection(Direction direction) {
+        lastDirection = direction;
     }
 
     // EFFECT: return x position of entity

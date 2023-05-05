@@ -17,7 +17,7 @@ public class WizardTest {
 
     @BeforeEach
     public void before() {
-        wizard = new Wizard(50, 20);
+        Wizard wizard = Wizard.getInstance();
     }
 
     // TESTING CONSTRUCTOR:
@@ -124,19 +124,6 @@ public class WizardTest {
     }
 
     @Test
-    public void moveTest() {
-        assertFalse(wizard.isMoving());
-        wizard.setDirection(1, 0);
-        wizard.move();
-        assertEquals(50 + speed, wizard.getPosX());
-        assertTrue(wizard.isMoving());
-        wizard.setDirection(0, 1);
-        wizard.move();
-        assertEquals(20 + speed, wizard.getPosY());
-        assertTrue(wizard.isMoving());
-    }
-
-    @Test
     public void getDXTestUpDown() {
         assertEquals(0, wizard.getDX());
         wizard.moveUp();
@@ -200,18 +187,12 @@ public class WizardTest {
 
     @Test
     public void getTimeTest() {
-        assertEquals(5, wizard.getTime());
-        wizard.setTime(3);
-        assertEquals(3, wizard.getTime());
-        wizard.setTime(1);
-        assertEquals(1, wizard.getTime());
+        assertEquals(5, wizard.getMana());
+        wizard.setMana(3);
+        assertEquals(3, wizard.getMana());
+        wizard.setMana(1);
+        assertEquals(1, wizard.getMana());
     }
 
-    @Test
-    public void isMovingTest() {
-        assertFalse(wizard.isMoving());
-        wizard.moveRight();
-        assertTrue(wizard.isMoving());
-    }
 
 }

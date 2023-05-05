@@ -2,6 +2,7 @@ package ui;
 
 import model.Entity;
 import model.Wizard;
+import model.Zombie;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,7 +17,9 @@ public class Animation extends GamePanel {
     private static final int HEIGHT = 75;
 
     // IMAGES:
-    private BufferedImage idle;
+
+    // Wizard:
+    private Image idleImage;
     private BufferedImage left1;
     private BufferedImage left2;
     private BufferedImage left3;
@@ -33,29 +36,33 @@ public class Animation extends GamePanel {
     private BufferedImage down2;
     private BufferedImage down3;
     private BufferedImage down4;
-
-    private Image idleImage;
-    private Image moveLeft1;
-    private Image moveLeft2;
-    private Image moveLeft3;
-    private Image moveLeft4;
-    private Image moveRight1;
-    private Image moveRight2;
-    private Image moveRight3;
-    private Image moveRight4;
-    private Image moveUp1;
-    private Image moveUp2;
-    private Image moveUp3;
-    private Image moveUp4;
-    private Image moveDown1;
-    private Image moveDown2;
-    private Image moveDown3;
-    private Image moveDown4;
+    // Zombie:
+    private BufferedImage left1z;
+    private BufferedImage left2z;
+    private BufferedImage left3z;
+    private BufferedImage left4z;
+    private BufferedImage right1z;
+    private BufferedImage right2z;
+    private BufferedImage right3z;
+    private BufferedImage right4z;
+    private BufferedImage up1z;
+    private BufferedImage up2z;
+    private BufferedImage up3z;
+    private BufferedImage up4z;
+    private BufferedImage down1z;
+    private BufferedImage down2z;
+    private BufferedImage down3z;
+    private BufferedImage down4z;
 
     private static final int livingX = Entity.LIVING_X;
     private static final int livingY = Entity.LIVING_Y;
 
     private int count;
+
+    private List<Image> zombieLeftFrames = new ArrayList<>();
+    private List<Image> zombieRightFrames = new ArrayList<>();
+    private List<Image> zombieUpFrames = new ArrayList<>();
+    private List<Image> zombieDownFrames = new ArrayList<>();
 
     private List<Image> wizardLeftFrames = new ArrayList<>();
     private List<Image> wizardRightFrames = new ArrayList<>();
@@ -69,31 +76,44 @@ public class Animation extends GamePanel {
         super(game);
         this.game = game;
         try {
-            idle = ImageIO.read(new File("data/wizardAnimation/idle.png"));
+            idleImage = ImageIO.read(new File("data/wizardAnimation/idle.png"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        idleImage = idle.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-        imageSetUp("left", "wizardAnimation", left1, left2, left3, left4, moveLeft1, moveLeft2,
-                moveLeft3,  moveLeft4, wizardLeftFrames);
+        idleImage = idleImage.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
         count = game.getCount();
-        imageSetUp("right", "wizardAnimation", right1, right2, right3, right4, moveRight1, moveRight2,
-                moveRight3,  moveRight4, wizardRightFrames);
-        imageSetUp("up", "wizardAnimation", up1, up2, up3, up4, moveUp1, moveUp2,
-                moveUp3,  moveUp4, wizardUpFrames);
-        imageSetUp("down", "wizardAnimation", down1, down2, down3, down4, moveDown1, moveDown2,
-                moveDown3,  moveDown4, wizardDownFrames);
-        count = game.getCount();
+        wizardFramesSetUp();
+        zombieFramesSetUp();
         drawWizard(g);
+        drawZombie(g);
+    }
+
+    // MODIFIES: this
+    // REQUIRES: valid parameters for imageSetUp
+    // EFFECTS: sets up four directional frames for wizard
+    private void wizardFramesSetUp() {
+        imageSetUp("left", "wizardAnimation", left1, left2, left3, left4, wizardLeftFrames);
+        imageSetUp("right", "wizardAnimation", right1, right2, right3, right4, wizardRightFrames);
+        imageSetUp("up", "wizardAnimation", up1, up2, up3, up4, wizardUpFrames);
+        imageSetUp("down", "wizardAnimation", down1, down2, down3, down4, wizardDownFrames);
+    }
+
+    // MODIFIES: this
+    // REQUIRES: valid parameters for imageSetUp
+    // EFFECTS: sets up four directional frames for zombie
+    private void zombieFramesSetUp() {
+        imageSetUp("left", "zombieAnimation", left1z, left2z, left3z, left4z, zombieLeftFrames);
+        imageSetUp("right", "zombieAnimation", right1z, right2z, right3z, right4z, zombieRightFrames);
+        imageSetUp("up", "zombieAnimation", up1z, up2z, up3z, up4z, zombieUpFrames);
+        imageSetUp("down", "zombieAnimation", down1z, down2z, down3z, down4z, zombieDownFrames);
     }
 
     // MODIFIES: this
     // REQUIRES: "direction" string must be one of "left", "right", "up", "down", and file must be alligned with the
     //           right file name
     // EFFECTS: abstract method for setting up images and putting them under one direction frame
-    private void imageSetUp(String direction, String file, BufferedImage one, BufferedImage two, BufferedImage three,
-                            BufferedImage four, Image aniOne, Image aniTwo, Image aniThree, Image aniFour,
-                            List<Image> frames) {
+    private void imageSetUp(String direction, String file, Image one, Image two, Image three,
+                            Image four, List<Image> frames) {
         try {
             one = ImageIO.read(new File("data/" + file + "/" + direction + "1.png"));
             two = ImageIO.read(new File("data/" + file + "/" + direction + "2.png"));
@@ -103,15 +123,15 @@ public class Animation extends GamePanel {
             throw new RuntimeException();
         }
 
-        aniOne = one.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-        aniTwo = two.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-        aniThree = three.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-        aniFour = four.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+        one = one.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+        two = two.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+        three = three.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+        four = four.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 
-        frames.add(aniOne);
-        frames.add(aniTwo);
-        frames.add(aniThree);
-        frames.add(aniFour);
+        frames.add(one);
+        frames.add(two);
+        frames.add(three);
+        frames.add(four);
     }
 
     // MODIFIES: this
@@ -139,8 +159,32 @@ public class Animation extends GamePanel {
                     wizard.getPosY() - (HEIGHT / 2), this);
         }
 
-        //System.out.println(point);
-        //g.fillRect(wizard.getPosX() - (livingX / 2), wizard.getPosY() - (livingY / 2), livingX, livingY);
     }
 
+    // MODIFIES: this
+    // EFFECTS: draws zombie
+    private void drawZombie(Graphics g) {
+        List<Zombie> zombies = game.getGameLogic().getZombies();
+        int point = count % 4;
+
+        // try to make animation slower
+
+        for (int i = 0; i < zombies.size(); i++) {
+
+            if (zombies.get(i).getLastDirection() == Entity.Direction.RIGHT) {
+                g.drawImage(zombieRightFrames.get(point), zombies.get(i).getPosX() - (WIDTH / 2),
+                        zombies.get(i).getPosY() - (HEIGHT / 2), this);
+            } else if (zombies.get(i).getLastDirection() == Entity.Direction.LEFT) {
+                g.drawImage(zombieLeftFrames.get(point), zombies.get(i).getPosX() - (WIDTH / 2),
+                        zombies.get(i).getPosY() - (HEIGHT / 2), this);
+            } else if (zombies.get(i).getLastDirection() == Entity.Direction.DOWN) {
+                g.drawImage(zombieDownFrames.get(point), zombies.get(i).getPosX() - (WIDTH / 2),
+                        zombies.get(i).getPosY() - (HEIGHT / 2), this);
+            } else if (zombies.get(i).getLastDirection() == Entity.Direction.UP) {
+                g.drawImage(zombieUpFrames.get(point), zombies.get(i).getPosX() - (WIDTH / 2),
+                        zombies.get(i).getPosY() - (HEIGHT / 2), this);
+            }
+        }
+    }
 }
+

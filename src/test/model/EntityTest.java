@@ -24,9 +24,9 @@ public class EntityTest {
 
     @BeforeEach
     public void before() {
-        wizard = new Wizard(x, y);
+        Wizard wizard = Wizard.getInstance();
         zombie = new Zombie(x, y);
-        blast = new Blast(x, y, true, true);
+        blast = new Blast(x, y, Entity.Direction.RIGHT);
     }
 
     @Test
@@ -59,46 +59,50 @@ public class EntityTest {
 
     @Test
     public void handleBoundaryTestRight() {
-        Wizard rightWizard = new Wizard(width - (speed + 2), 0);
-        rightWizard.moveRight();
-        assertEquals(width - 2, rightWizard.getPosX());
-        rightWizard.moveRight();
-        assertEquals(width, rightWizard.getPosX());
-        rightWizard.moveRight();
-        assertEquals(width, rightWizard.getPosX());
+        wizard.setPosX(width - (speed + 2));
+        wizard.setPosY(0);
+        wizard.moveRight();
+        assertEquals(width - 2, wizard.getPosX());
+        wizard.moveRight();
+        assertEquals(width, wizard.getPosX());
+        wizard.moveRight();
+        assertEquals(width, wizard.getPosX());
     }
 
     @Test
     public void handleBoundaryTestLeft() {
-        Wizard leftWizard = new Wizard(speed + 2, 0);
-        leftWizard.moveLeft();
-        assertEquals(2, leftWizard.getPosX());
-        leftWizard.moveLeft();
-        assertEquals(0, leftWizard.getPosX());
-        leftWizard.moveLeft();
-        assertEquals(0, leftWizard.getPosX());
+        wizard.setPosX(speed + 2);
+        wizard.setPosY(0);
+        wizard.moveLeft();
+        assertEquals(2, wizard.getPosX());
+        wizard.moveLeft();
+        assertEquals(0, wizard.getPosX());
+        wizard.moveLeft();
+        assertEquals(0, wizard.getPosX());
     }
 
     @Test
     public void handleBoundaryTestUp() {
-        Wizard upWizard = new Wizard(0, speed + 2);
-        upWizard.moveUp();
-        assertEquals(2, upWizard.getPosY());
-        upWizard.moveUp();
-        assertEquals(0, upWizard.getPosY());
-        upWizard.moveUp();
-        assertEquals(0, upWizard.getPosY());
+        wizard.setPosX(0);
+        wizard.setPosY(speed + 2);
+        wizard.moveUp();
+        assertEquals(2, wizard.getPosY());
+        wizard.moveUp();
+        assertEquals(0, wizard.getPosY());
+        wizard.moveUp();
+        assertEquals(0, wizard.getPosY());
     }
 
     @Test
     public void handleBoundaryTestDown() {
-        Wizard downWizard = new Wizard(0, width - (speed + 2));
-        downWizard.moveDown();
-        assertEquals(width - 2, downWizard.getPosY());
-        downWizard.moveDown();
-        assertEquals(width, downWizard.getPosY());
-        downWizard.moveDown();
-        assertEquals(width, downWizard.getPosY());
+        wizard.setPosX(0);
+        wizard.setPosY(width - (speed + 2));
+        wizard.moveDown();
+        assertEquals(width - 2, wizard.getPosY());
+        wizard.moveDown();
+        assertEquals(width, wizard.getPosY());
+        wizard.moveDown();
+        assertEquals(width, wizard.getPosY());
     }
 
 }

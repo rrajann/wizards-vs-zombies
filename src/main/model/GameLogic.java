@@ -8,6 +8,8 @@ import ui.WizardsVsZombies;
 import java.util.ArrayList;
 import java.util.List;
 
+import static model.Entity.Direction;
+
 // Represents the interaction of all entities and list of entities within the game
 public class GameLogic implements Writable {
 
@@ -17,7 +19,7 @@ public class GameLogic implements Writable {
 
     // EFFECT: creates a collection of entities, including one wizard and a list of wizards and blasts
     public GameLogic() {
-        wizard = new Wizard(WizardsVsZombies.WIDTH / 2, WizardsVsZombies.HEIGHT / 2);
+        wizard = Wizard.getInstance();
         blasts = new ArrayList<>();
         zombies = new ArrayList<>();
     }
@@ -45,7 +47,7 @@ public class GameLogic implements Writable {
         wizard.setDx(dx);
         wizard.setDy(dy);
         wizard.setHealth(health);
-        wizard.setTime(time);
+        wizard.setMana(time);
     }
 
     // MODIFIES: this
@@ -147,17 +149,17 @@ public class GameLogic implements Writable {
     // MODIFIES: this
     public void basicAttack() {
 
-        if (wizard.getLastDirection().equals(Entity.Direction.RIGHT)) {
-            Blast blastRight = new Blast(wizard.getPosX(), wizard.getPosY(), true, true);
+        if (wizard.getLastDirection().equals(Direction.RIGHT)) {
+            Blast blastRight = new Blast(wizard.getPosX(), wizard.getPosY(), Direction.RIGHT);
             this.addBlast(blastRight);
-        } else if (wizard.getLastDirection().equals(Entity.Direction.LEFT)) {
-            Blast blastLeft = new Blast(wizard.getPosX(), wizard.getPosY(), true, false);
+        } else if (wizard.getLastDirection().equals(Direction.LEFT)) {
+            Blast blastLeft = new Blast(wizard.getPosX(), wizard.getPosY(), Direction.LEFT);
             this.addBlast(blastLeft);
-        } else if (wizard.getLastDirection().equals(Entity.Direction.DOWN)) {
-            Blast blastDown = new Blast(wizard.getPosX(), wizard.getPosY(), false, true);
+        } else if (wizard.getLastDirection().equals(Direction.DOWN)) {
+            Blast blastDown = new Blast(wizard.getPosX(), wizard.getPosY(), Direction.DOWN);
             this.addBlast(blastDown);
-        } else if (wizard.getLastDirection().equals(Entity.Direction.UP)) {
-            Blast blastUp = new Blast(wizard.getPosX(), wizard.getPosY(), false, false);
+        } else if (wizard.getLastDirection().equals(Direction.UP)) {
+            Blast blastUp = new Blast(wizard.getPosX(), wizard.getPosY(), Direction.UP);
             this.addBlast(blastUp);
         }
 

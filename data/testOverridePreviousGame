@@ -6,8 +6,6 @@
     "dy": 5,
     "x": 5,
     "y": 10,
-    "health": 100,
-    "time": 5,
-    "moving": false
+    "health": 100
   }
 }

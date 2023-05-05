@@ -65,12 +65,8 @@ public class JsonReaderTest {
             Blast blast2 = game.getBlasts().get(1);
             assertEquals(20, blast1.getPosX());
             assertEquals(5, blast1.getPosY());
-            assertTrue(blast1.isHorizontal());
-            assertFalse(blast1.isDirection());
             assertEquals(50, blast2.getPosX());
             assertEquals(20, blast2.getPosY());
-            assertFalse(blast2.isHorizontal());
-            assertFalse(blast2.isDirection());
         } catch (IOException e) {
             fail("Shouldn't have caught exception");
         }

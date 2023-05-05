@@ -30,7 +30,7 @@ many interactive components.
 - As a user, whenever I quit the game, I want the game state to be automatically saved in a file
 - As a user, whenever I start the game, I want to be given the option of starting from a previously saved state (or not)
 
-## Instructions for Grader
+## Instructions
 - You can generate the first required event relating to shooting a blast into the game by pressing the "k" key
 - You can generate the second required event relating to shooting a blast into the game by clicking the "shoot" button
 - You can always see my visual component while in the game screen, which will show you the current game state

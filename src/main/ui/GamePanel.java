@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 public class GamePanel extends JPanel {
 
     protected WizardsVsZombies game;
-    private JLabel background;
+    private Image background;
     private final int livingX = Entity.LIVING_X;
     private final int livingY = Entity.LIVING_Y;
     private final int blastX = Entity.BLAST_X_SIZE;
@@ -36,6 +37,13 @@ public class GamePanel extends JPanel {
         instructions.setForeground(Color.white);
         instructions.setBounds(0, 0, 10, 10);
         shootBlast();
+
+        try {
+            background = ImageIO.read(new File("data/background.jpg"));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+        background = background.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 
         this.game = game;
         setVisible(true);
@@ -59,7 +67,7 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        g.drawImage(background, 0,0, this);
         drawGame(g);
         repaint();
     }
@@ -69,7 +77,6 @@ public class GamePanel extends JPanel {
     private void drawGame(Graphics g) {
         new Animation(g, game);
         drawBlasts(g);
-        drawZombies(g);
         drawHealth(g);
     }
 
@@ -87,17 +94,6 @@ public class GamePanel extends JPanel {
         return "Health: " + game.getGameLogic().getWizard().getHealth();
     }
 
-
-    // MODIFIES: this
-    // EFFECTS: draws zombie
-    private void drawZombies(Graphics g) {
-        g.setColor(new Color(41, 75, 22));
-        List<Zombie> zombies = game.getGameLogic().getZombies();
-
-        for (Zombie z : zombies) {
-            g.fillRect(z.getPosX() - (livingX / 2), z.getPosY() - (livingY / 2), livingX, livingY);
-        }
-    }
 
     // MODIFIES: this
     // EFFECTS: draws blasts

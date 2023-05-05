@@ -10,49 +10,34 @@ public class Blast extends Entity implements Writable {
 
     public static final int BLAST_SPEED = 15;
 
-    private boolean horizontal;
-    private boolean direction;
     private static final int X_SIZE = Entity.BLAST_X_SIZE;
     private static final int Y_SIZE = Entity.BLAST_Y_SIZE;
 
     // EFFECT: creates a blast with given position and moving right
-    public Blast(int posX, int posY, boolean h, boolean d) {
+    public Blast(int posX, int posY, Direction direction) {
         super(posX, posY);
-        horizontal = h; // true means going horizontally (left/right)
-        direction = d; // true means going in the positive direction (right/down)
-        hitbox = new Rectangle(posX - X_SIZE / 2, posY - Y_SIZE / 2, X_SIZE, Y_SIZE);
-    }
-
-    // EFFECT: return weather or not the blast is moving horizontally
-    public boolean isHorizontal() {
-        return horizontal;
-    }
-
-    // EFFECT: return weather or not the blast is moving in the positive direction
-    public boolean isDirection() {
-        return direction;
+        lastDirection = direction;
+        hitbox = new Rectangle(posX - X_SIZE / 2, posY - Y_SIZE / 2, X_SIZE * 4, Y_SIZE * 4);
     }
 
     // EFFECTS: moves the blast by its speed
     // MODIFIES: this
     public void move() {
-        if (horizontal) {
-            if (direction) {
-                posX += BLAST_SPEED;
-                lastDirection = Direction.RIGHT;
-            } else {
-                posX -= BLAST_SPEED;
-                lastDirection = Direction.LEFT;
-            }
-        } else {
-            if (direction) {
-                posY += BLAST_SPEED;
-                lastDirection = Direction.DOWN;
-            } else {
+        switch (lastDirection) {
+            case UP:
                 posY -= BLAST_SPEED;
-                lastDirection = Direction.UP;
-            }
+                break;
+            case DOWN:
+                posY += BLAST_SPEED;
+                break;
+            case LEFT:
+                posX -= BLAST_SPEED;
+                break;
+            case RIGHT:
+                posX += BLAST_SPEED;
+                break;
         }
+
         hitbox.setLocation(posX, posY);
     }
 
@@ -62,8 +47,7 @@ public class Blast extends Entity implements Writable {
         JSONObject blastAttribute = new JSONObject();
         blastAttribute.put("x", posX);
         blastAttribute.put("y", posY);
-        blastAttribute.put("horizontal", horizontal);
-        blastAttribute.put("direction", direction);
+        blastAttribute.put("direction", lastDirection);
         return blastAttribute;
     }
 }

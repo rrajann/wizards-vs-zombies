@@ -19,7 +19,7 @@ public class BlastTest {
 
     @Test
     public void moveTestRight() {
-        blastRight = new Blast(startWidth, startHeight, true, true);
+        blastRight = new Blast(startWidth, startHeight, Entity.Direction.RIGHT);
         blastRight.move();
         assertEquals(startWidth + speed, blastRight.getPosX());
         assertEquals(startHeight, blastRight.getPosY());
@@ -30,7 +30,7 @@ public class BlastTest {
 
     @Test
     public void moveTestLeft() {
-        blastLeft = new Blast(startWidth, startHeight, true, false);
+        blastLeft = new Blast(startWidth, startHeight, Entity.Direction.LEFT);
         blastLeft.move();
         assertEquals(startWidth - speed, blastLeft.getPosX());
         assertEquals(startHeight, blastLeft.getPosY());
@@ -41,7 +41,7 @@ public class BlastTest {
 
     @Test
     public void moveTestUp() {
-        blastUp = new Blast(startWidth, startHeight, false, false);
+        blastUp = new Blast(startWidth, startHeight, Entity.Direction.UP);
         blastUp.move();
         assertEquals(startHeight - speed, blastUp.getPosY());
         assertEquals(startWidth, blastUp.getPosX());
@@ -52,7 +52,7 @@ public class BlastTest {
 
     @Test
     public void moveTestDown() {
-        blastDown = new Blast(startWidth, startHeight, false, true);
+        blastDown = new Blast(startWidth, startHeight, Entity.Direction.DOWN);
         blastDown.move();
         assertEquals(startHeight + speed, blastDown.getPosY());
         assertEquals(startWidth, blastDown.getPosX());
