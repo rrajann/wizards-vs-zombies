@@ -1,4 +1,4 @@
-# My Personal Project
+# Wizards Vs Zombies
 
 ## A Single-Panel Game Survival Game
 
